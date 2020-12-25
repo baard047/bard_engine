@@ -8,7 +8,11 @@
 
 #include <Engine.h>
 
-class Sandbox final : public bard::Application { };
+class Sandbox final : public bard::Application
+{
+public:
+    Sandbox() { LOG_INFO( "Hello from application" ); }
+};
 
 bard::Application * bard::createApplication()
 {
