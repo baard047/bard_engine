@@ -26,12 +26,10 @@ public:
     static void init();
     static Ptr makeLogger( std::string_view name ) noexcept;
 
-    inline static const Ptr & coreLogger() { return s_coreLogger; }
-    inline static const Ptr & defaultClientLogger() { return s_clientLogger; }
+    inline static const Ptr & defaultClientLogger() { return s_defaultClientLogger; }
 
 private:
-    static Ptr s_coreLogger;
-    static Ptr s_clientLogger;
+    static Ptr s_defaultClientLogger;
 };
 
 }

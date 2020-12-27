@@ -10,3 +10,7 @@ file( GLOB_RECURSE SOURCE_FILES "*.cpp" )
 add_library( ${TARGET_NAME} SHARED ${HEADER_FILES} ${SOURCE_FILES} )
 target_include_directories(${TARGET_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} )
 target_link_libraries( ${TARGET_NAME} spdlog_header_only )
+
+if( ${CMAKE_BUILD_TYPE} MATCHES "Debug" )
+	target_compile_definitions(${TARGET_NAME} PUBLIC BARD_ENABLE_ASSERTS)
+endif()

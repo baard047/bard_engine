@@ -8,19 +8,14 @@
 
 #pragma once
 
-#include "core/logging/Logger.h"
+#include <bard/core/Base.h>
 
 extern bard::Application * bard::createApplication();
 
 int main( int argc, char ** argv )
 {
     bard::core::Logger::init();
-    CORE_LOG_INFO("info");
-    CORE_LOG_TRACE("TRACE");
-    CORE_LOG_WARN("some warn");
-    CORE_LOG_ERROR("some error");
-    CORE_LOG_DEBUG("debug message");
-    CORE_LOG_CRITICAL("CRITICAL");
+    CORE_LOG_INFO("================ Running bard engine ================");
 
     auto app = bard::createApplication();
     app->run();

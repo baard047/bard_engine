@@ -8,5 +8,5 @@
 
 #pragma once
 
-#include "bard/Application.h"
-#include <bard/EntryPoint.h>
+#include "bard/core/Application.h"
+#include <bard/core/EntryPoint.h>

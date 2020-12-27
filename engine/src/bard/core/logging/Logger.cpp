@@ -54,8 +54,7 @@ void Logger::init()
         auto logger = makeLogger( "Engine" );
         spdlog::set_default_logger( logger );
 
-        s_coreLogger = logger;
-        s_clientLogger = makeLogger( "Application" );
+        s_defaultClientLogger = makeLogger( "Application" );
     } );
 }
 
@@ -89,7 +88,6 @@ Logger::Ptr Logger::makeLogger( std::string_view name ) noexcept
     return logger;
 }
 
-Logger::Ptr Logger::s_coreLogger;
-Logger::Ptr Logger::s_clientLogger;
+Logger::Ptr Logger::s_defaultClientLogger;
 
 }
