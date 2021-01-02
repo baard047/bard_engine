@@ -40,13 +40,16 @@ public:
             : subscriber( subscriber ),
               callback( callback ) {}
 
-    void call( EventT & event ) override
+    void call( Event & event ) override
     {
         BARD_CORE_ASSERT( subscriber, "Subscriber is nullptr" )
-        ( subscriber->*callback )( static_cast< EventT & >( event ) );
+        if( subscriber )
+        {
+            ( subscriber->*callback )( static_cast< EventT & >( event ) );
+        }
     }
 
-    bool checkSubscriber( SubscriberT * const other )
+    bool checkSubscriber( SubscriberT * const other ) //NOTE: for unsubscribe
     {
         return subscriber == other;
     }
@@ -70,21 +73,13 @@ public:
     void publish( EventT & event ) noexcept
     {
         auto found = subscribers.find( EventT::staticType );
-        if( found == subscribers.end() )
+        if( found != subscribers.end() )
         {
-            //TODO rm
-            CORE_LOG_WARN("No subscribers for event: {0}", event );
-            return;
-        }
-
-        for( const auto & handler : found->second )
-        {
-            BARD_CORE_ASSERT( handler, "null event handler" );
-            if( event.handled ) { break; }
-
-            if( handler )
+            for( const auto & handler : found->second )
             {
-                ( *handler )( event );
+                BARD_CORE_ASSERT( handler, "null event handler" );
+                if( handler ) { ( *handler )( event ); }
+                if( event.handled ) { break; }
             }
         }
     }
@@ -112,10 +107,7 @@ public:
                                      } );
             handlers.erase( it, handlers.end() );
 
-            if( handlers.empty() )
-            {
-                subscribers.erase( found );
-            }
+            if( handlers.empty() ) { subscribers.erase( found ); }
         }
         //TODO rm
         else { BARD_CORE_ASSERT( "No subscribers for event type {0}", EventT::staticType ); }

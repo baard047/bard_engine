@@ -9,7 +9,7 @@
 #pragma once
 
 #include "WindowInterface.h"
-#include <bard/events/Event.h>
+#include <bard/events/ApplicationEvent.h>
 
 namespace bard
 {
@@ -18,12 +18,12 @@ class Application
 {
 public:
     Application();
-    virtual ~Application();
+    virtual ~Application() = default;
 
     void run();
 
 private:
-    void onEvent( Events::Event & event );
+    void onWindowCloseEvent( Events::WindowClose & event );
 
 private:
     Events::Manager::Ptr m_eventBuss;

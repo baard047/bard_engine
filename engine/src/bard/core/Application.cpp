@@ -18,15 +18,7 @@ Application::Application()
           m_running( true )
 {
     m_window->setEventCallback( m_eventBuss );
-
-    //TODO rm
-    m_eventBuss->subscribe( this, &Application::onEvent );
-    m_eventBuss->unsubscribe< Events::Event >( this );
-}
-
-Application::~Application()
-{
-
+    m_eventBuss->subscribe( this, &Application::onWindowCloseEvent );
 }
 
 void Application::run()
@@ -37,10 +29,10 @@ void Application::run()
     }
 }
 
-//TODO rm
-void Application::onEvent( Events::Event & event )
+void Application::onWindowCloseEvent( Events::WindowClose & event )
 {
-    CORE_LOG_INFO( "wow, event buss working: {0}", event );
+    m_running = false;
+    event.handled = true;
 }
 
 }
