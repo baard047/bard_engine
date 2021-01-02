@@ -45,12 +45,12 @@ struct KeyReleased : public Key
     std::string toString() const override
     {
         std::stringstream ss;
-        ss << "KeyReleased: " << m_keyCode;
+        ss << "KeyReleased: " << keycode;
         return ss.str();
     }
 };
 
-class KeyTyped : public Key
+struct KeyTyped : public Key
 {
     EVENT_CLASS_TYPE( Type::KeyTyped )
     explicit KeyTyped( int keycode) : Key( keycode ) {}
@@ -58,7 +58,7 @@ class KeyTyped : public Key
     std::string toString() const override
     {
         std::stringstream ss;
-        ss << "KeyTyped: " << m_keyCode;
+        ss << "KeyTyped: " << keycode;
         return ss.str();
     }
 };

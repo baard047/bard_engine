@@ -8,6 +8,9 @@
 
 #pragma once
 
+#include "WindowInterface.h"
+#include <bard/events/Event.h>
+
 namespace bard
 {
 
@@ -18,6 +21,15 @@ public:
     virtual ~Application();
 
     void run();
+
+private:
+    void onEvent( Events::Event & event );
+
+private:
+    Events::Manager::Ptr m_eventBuss;
+    WindowInterface::Ptr m_window;
+
+    bool m_running;
 };
 
 Application * createApplication();

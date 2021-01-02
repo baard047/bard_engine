@@ -13,6 +13,7 @@
 #include <vector>
 #include <unordered_map>
 #include <memory>
+#include <algorithm>
 
 #include <bard/core/Base.h>
 #include <bard/core/utils/SFINAE.h>
@@ -29,7 +30,7 @@ private:
     virtual void call( Event & event ) = 0;
 };
 
-template< class SubscriberT, class EventT, class = SFINAE::IsBaseOf< EventT, Event > >
+template< class SubscriberT, class EventT, class = SFINAE::IsBaseOf< Event, EventT > >
 struct Handler : public FunctionWrapper
 {
     using Callback = void ( SubscriberT::* )( EventT & );
@@ -45,6 +46,11 @@ public:
         ( subscriber->*callback )( static_cast< EventT & >( event ) );
     }
 
+    bool checkSubscriber( SubscriberT * const other )
+    {
+        return subscriber == other;
+    }
+
 private:
     SubscriberT * const subscriber;
     Callback callback;
@@ -54,43 +60,65 @@ private:
 
 class Manager
 {
-public:
-    using Handlers = std::vector< FunctionWrapper::Ptr >;
+    using Handlers = std::vector< detail::FunctionWrapper::Ptr >;
 
 public:
-    template< class EventT, class = SFINAE::IsBaseOf< EventT, Event > >
+    using Ptr = std::shared_ptr< Manager >;
+
+public:
+    template< class EventT, class = SFINAE::IsBaseOf< Event, EventT > >
     void publish( EventT & event ) noexcept
     {
-        auto found = subscribers.find( EventT::type );
+        auto found = subscribers.find( EventT::staticType );
         if( found == subscribers.end() )
         {
-            CORE_LOG_ERROR("No subscribers for event: {0}", event );
+            //TODO rm
+            CORE_LOG_WARN("No subscribers for event: {0}", event );
             return;
         }
 
-        for( auto handler : found.second )
+        for( const auto & handler : found->second )
         {
             BARD_CORE_ASSERT( handler, "null event handler" );
-            if( event.handled )
-            {
-                break;
-            }
+            if( event.handled ) { break; }
 
-            handler->( event );
+            if( handler )
+            {
+                ( *handler )( event );
+            }
         }
     }
 
-    template< class SubscriberT, class EventT, class = SFINAE::IsBaseOf< EventT, Event > >
+    template< class SubscriberT, class EventT, class = SFINAE::IsBaseOf< Event, EventT > >
     void subscribe( SubscriberT * subscriber, void ( SubscriberT::*callBack )( EventT & ) )
     {
         auto handler = std::make_unique< detail::Handler< SubscriberT, EventT > >( subscriber, callBack );
+        subscribers[ EventT::staticType ].push_back( std::move( handler ) );
+    }
 
-        auto found = subscribers.find( EventT::type );
-        if( found == subscribers.end() )
+    template< class EventT, class SubscriberT, class = SFINAE::IsBaseOf< Event, EventT >>
+    void unsubscribe( SubscriberT * subscriber )
+    {
+        auto found = subscribers.find( EventT::staticType );
+        if( found != subscribers.end() )
         {
-            subscribers.emplace( EventT::type, { std::move( handler ) } );
+            auto & handlers = found->second;
+
+            auto it = std::remove_if( handlers.begin(), handlers.end(),
+                                     [ subscriber ]( const auto & entry )
+                                     {
+                                         auto handler = dynamic_cast< detail::Handler< SubscriberT, EventT > * > ( entry.get() );
+                                         return handler && handler->checkSubscriber( subscriber );
+                                     } );
+            handlers.erase( it, handlers.end() );
+
+            if( handlers.empty() )
+            {
+                subscribers.erase( found );
+            }
         }
-        else { found.second.push_back( std::move( handler ) ); }
+        //TODO rm
+        else { BARD_CORE_ASSERT( "No subscribers for event type {0}", EventT::staticType ); }
     }
 
 private:

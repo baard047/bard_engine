@@ -8,6 +8,13 @@
 
 #pragma once
 
+////temp
+#include <string>
+#include <cstdint>
+#include <functional>
+#include <memory>
+////
+
 #include "logging/Logger.h"
 
 #ifdef BARD_ENABLE_ASSERTS

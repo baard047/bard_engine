@@ -14,7 +14,7 @@ namespace bard::Events {
 
 struct WindowResize : public Event
 {
-    EVENT_CLASS_TYPE( Type::WindowResize )
+    EVENT_CLASS_TYPE( Type::WindowResize );
     EVENT_CLASS_CATEGORY( Category::Application )
 
     WindowResize( uint32_t width, uint32_t height )

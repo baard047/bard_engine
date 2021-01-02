@@ -46,7 +46,7 @@ struct MouseScrolled : public Event
     std::string toString() const override
     {
         std::stringstream ss;
-        ss << "MouseScrolled: " << getXOffset() << ", " << getYOffset();
+        ss << "MouseScrolled: " << xOffset << ", " << yOffset;
         return ss.str();
     }
 };
@@ -81,7 +81,7 @@ struct MouseButtonReleased : public MouseButton
     std::string toString() const override
     {
         std::stringstream ss;
-        ss << "MouseButtonReleased: " << m_button;
+        ss << "MouseButtonReleased: " << button;
         return ss.str();
     }
 };
