@@ -25,8 +25,26 @@ void Application::run()
 {
     while( m_running )
     {
+        for( auto layer : m_layerStack )
+        {
+            layer->update();
+        }
         m_window->update();
     }
+}
+
+void Application::pushLayer( Layer * layer )
+{
+    layer->setEventBuss( m_eventBuss );
+    m_layerStack.pushLayer( layer );
+    layer->attach();
+}
+
+void Application::pushOverlay( Layer * overlay )
+{
+    overlay->setEventBuss( m_eventBuss );
+    m_layerStack.pushOverlay( overlay );
+    overlay->attach();
 }
 
 void Application::onWindowCloseEvent( Events::WindowClose & event )

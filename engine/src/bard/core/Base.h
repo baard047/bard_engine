@@ -13,6 +13,7 @@
 #include <cstdint>
 #include <functional>
 #include <memory>
+#include <vector>
 ////
 
 #include "logging/Logger.h"

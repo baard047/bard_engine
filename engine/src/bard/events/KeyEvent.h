@@ -18,7 +18,7 @@ struct Key : public Event
     const int keycode;
 
 protected:
-    explicit Key( int keycode) : keycode( keycode) {}
+    explicit Key( int keycode) : keycode( keycode ) {}
 };
 
 struct KeyPressed : public Key

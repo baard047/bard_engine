@@ -25,7 +25,7 @@ struct Event
     virtual std::string toString() const { return name(); }
     virtual const char * name() const = 0;
 
-    inline bool isInCategory(Category category)
+    inline bool isInCategory( Category category ) const
     {
         return categoryFlags() & category;
     }

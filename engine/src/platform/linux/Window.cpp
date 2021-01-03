@@ -12,6 +12,8 @@
 #include <bard/events/KeyEvent.h>
 #include <bard/events/MouseEvent.h>
 
+#include <glad/glad.h>
+
 namespace bard::Linux {
 
 namespace {
@@ -43,8 +45,8 @@ Window::Window( const WindowInterface::Properties & props )
 
     m_window = glfwCreateWindow( ( int ) props.width, ( int ) props.height, props.title.c_str(), nullptr, nullptr );
     glfwMakeContextCurrent( m_window );
-//    int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-//    BARD_CORE_ASSERT(status, "Failed to initialize GLAD");
+    int status = gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
+    BARD_CORE_ASSERT(status, "Failed to initialize GLAD");
 
     glfwSetWindowUserPointer( m_window, &m_data );
     setVSync( true );

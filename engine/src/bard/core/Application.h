@@ -10,6 +10,7 @@
 
 #include "WindowInterface.h"
 #include <bard/events/ApplicationEvent.h>
+#include <bard/core/LayerStack.h>
 
 namespace bard
 {
@@ -22,10 +23,16 @@ public:
 
     void run();
 
+    void pushLayer( Layer * layer);
+    void pushOverlay( Layer * overlay);
+
+    inline WindowInterface & window() { return *m_window; }
+
 private:
     void onWindowCloseEvent( Events::WindowClose & event );
 
 private:
+    LayerStack m_layerStack;
     Events::Manager::Ptr m_eventBuss;
     WindowInterface::Ptr m_window;
 

@@ -8,10 +8,25 @@
 
 #include <Engine.h>
 
+class ExampleLayer : public bard::Layer
+{
+public:
+    ExampleLayer() : bard::Layer("Example") {}
+
+    void update() override
+    {
+//        LOG_INFO( "ExampleLayer::Update" );
+    }
+};
+
 class Sandbox final : public bard::Application
 {
 public:
-    Sandbox() { LOG_INFO( "Hello from application" ); }
+    Sandbox()
+    {
+        pushLayer( new ExampleLayer{} );
+        LOG_INFO( "Hello from application" );
+    }
 };
 
 bard::Application * bard::createApplication()
