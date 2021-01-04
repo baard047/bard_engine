@@ -18,4 +18,4 @@ target_link_libraries( ${TARGET_NAME}
 if( ${CMAKE_BUILD_TYPE} MATCHES "Debug" )
 	target_compile_definitions(${TARGET_NAME} PUBLIC BARD_ENABLE_ASSERTS)
 endif()
-target_compile_definitions(${TARGET_NAME} PUBLIC GLFW_INCLUDE_NONE)
+target_compile_definitions(${TARGET_NAME} PRIVATE GLFW_INCLUDE_NONE)

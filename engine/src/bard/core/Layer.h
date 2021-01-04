@@ -25,7 +25,11 @@ public:
     inline void setEventBuss( Events::Manager::Ptr buss ) noexcept
     {
         m_eventBuss = std::move( buss );
+        setupConnections();
     }
+
+    //function to implement on client side.
+    virtual void setupConnections() {}
 
     virtual void attach() {}
     virtual void detach() {}
