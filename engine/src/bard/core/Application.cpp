@@ -10,6 +10,8 @@
 
 #include <platform/linux/Window.h>
 
+#include <glad/glad.h> //TODO temp
+
 namespace bard {
 
 Application::Application()
@@ -27,6 +29,9 @@ void Application::run()
 {
     while( m_running )
     {
+        glClearColor(0, 0, 0, 1);
+        glClear(GL_COLOR_BUFFER_BIT);
+
         for( auto layer : m_layerStack )
         {
             layer->update();
