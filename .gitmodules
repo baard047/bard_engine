@@ -4,3 +4,6 @@
 [submodule "engine/third-party/glfw"]
 	path = engine/third-party/glfw
 	url = https://github.com/glfw/glfw
+[submodule "engine/third-party/imgui"]
+	path = engine/third-party/imgui
+	url = https://github.com/baard047/imgui

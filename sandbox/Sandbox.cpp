@@ -25,6 +25,7 @@ public:
     Sandbox()
     {
         pushLayer( new ExampleLayer{} );
+        pushOverlay( new bard::ImGuiLayer{} );
         LOG_INFO( "Hello from application" );
     }
 };

@@ -13,6 +13,7 @@ target_link_libraries( ${TARGET_NAME}
                        spdlog_header_only
                        glfw ${OPENGL_glu_LIBRARY} ${GLFW_LIBRARIES}
                        glad
+                       imgui
                        )
 
 if( ${CMAKE_BUILD_TYPE} MATCHES "Debug" )

@@ -17,6 +17,8 @@ Application::Application()
           m_window( Linux::Window::create( { "Bard Engine", 1280, 720 } ) ),
           m_running( true )
 {
+    BARD_CORE_ASSERT( !m_instance, "Do a proper singleton, lazy dumbass" );
+    m_instance = this;
     m_window->setEventCallback( m_eventBuss );
     m_eventBuss->subscribe( this, &Application::onWindowCloseEvent );
 }
@@ -47,10 +49,13 @@ void Application::pushOverlay( Layer * overlay )
     overlay->attach();
 }
 
-void Application::onWindowCloseEvent( Events::WindowClose & event )
+bool Application::onWindowCloseEvent( Events::WindowClose & event )
 {
     m_running = false;
-    event.handled = true;
+    return true;
 }
+
+//TODO rm
+Application * Application::m_instance = nullptr;
 
 }

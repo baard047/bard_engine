@@ -25,28 +25,29 @@ namespace detail {
 struct FunctionWrapper
 {
     using Ptr = std::unique_ptr< FunctionWrapper >;
-    void operator()( Event & event ) { call( event ); }
+    bool operator()( Event & event ) { return call( event ); }
 private:
-    virtual void call( Event & event ) = 0;
+    virtual bool call( Event & event ) = 0;
 };
 
 template< class SubscriberT, class EventT, class = SFINAE::IsBaseOf< Event, EventT > >
 struct Handler : public FunctionWrapper
 {
-    using Callback = void ( SubscriberT::* )( EventT & );
+    using Callback = bool ( SubscriberT::* )( EventT & );
 
 public:
     Handler( SubscriberT * const subscriber, Callback callback ) noexcept
             : subscriber( subscriber ),
               callback( callback ) {}
 
-    void call( Event & event ) override
+    bool call( Event & event ) override
     {
         BARD_CORE_ASSERT( subscriber, "Subscriber is nullptr" )
         if( subscriber )
         {
-            ( subscriber->*callback )( static_cast< EventT & >( event ) );
+            return ( subscriber->*callback )( static_cast< EventT & >( event ) );
         }
+        return false;
     }
 
     bool checkSubscriber( SubscriberT * const other ) //NOTE: for unsubscribe
@@ -78,14 +79,17 @@ public:
             for( const auto & handler : found->second )
             {
                 BARD_CORE_ASSERT( handler, "null event handler" );
-                if( handler ) { ( *handler )( event ); }
+                if( handler )
+                {
+                    event.handled = ( *handler )( event );
+                }
                 if( event.handled ) { break; }
             }
         }
     }
 
     template< class SubscriberT, class EventT, class = SFINAE::IsBaseOf< Event, EventT > >
-    void subscribe( SubscriberT * subscriber, void ( SubscriberT::*callBack )( EventT & ) )
+    void subscribe( SubscriberT * subscriber, bool ( SubscriberT::*callBack )( EventT & ) )
     {
         auto handler = std::make_unique< detail::Handler< SubscriberT, EventT > >( subscriber, callBack );
         subscribers[ EventT::staticType ].push_back( std::move( handler ) );

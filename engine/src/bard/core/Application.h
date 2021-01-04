@@ -26,10 +26,13 @@ public:
     void pushLayer( Layer * layer);
     void pushOverlay( Layer * overlay);
 
+    //TODO temp, proper singleton
+    inline static Application & instance() { return *m_instance; }
+
     inline WindowInterface & window() { return *m_window; }
 
 private:
-    void onWindowCloseEvent( Events::WindowClose & event );
+    bool onWindowCloseEvent( Events::WindowClose & event );
 
 private:
     LayerStack m_layerStack;
@@ -37,6 +40,9 @@ private:
     WindowInterface::Ptr m_window;
 
     bool m_running;
+
+private: //TODO temp
+    static Application * m_instance;
 };
 
 Application * createApplication();
