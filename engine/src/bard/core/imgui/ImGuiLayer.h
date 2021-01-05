@@ -20,22 +20,13 @@ class ImGuiLayer : public Layer
 {
 public:
     ImGuiLayer();
-    void setupConnections() override;
 
-    void attach() override;
-    void update() override;
+    void onAttach() override;
+    void onDetach() override;
+    void onImGuiRender() override;
 
-private:
-    bool onMouseButtonPressed( Events::MouseButtonPressed & event );
-    bool onMouseButtonReleased( Events::MouseButtonReleased & event );
-    bool onMouseMoved( Events::MouseMoved & event );
-    bool onMouseButtonScrolled( Events::MouseScrolled & event );
-
-    bool onKeyPressed( Events::KeyPressed & event );
-    bool onKeyReleased( Events::KeyReleased & event );
-    bool onKeyTyped( Events::KeyTyped & event );
-
-    bool onWindowResize( Events::WindowResize & event );
+    void begin();
+    void end();
 
 private:
     float m_time = 0.0f;

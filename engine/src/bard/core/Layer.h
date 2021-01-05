@@ -31,9 +31,10 @@ public:
     //function to implement on client side.
     virtual void setupConnections() {}
 
-    virtual void attach() {}
-    virtual void detach() {}
-    virtual void update() {}
+    virtual void onAttach() {}
+    virtual void onDetach() {}
+    virtual void onUpdate() {}
+    virtual void onImGuiRender() {}
 
     inline const std::string & getName() const { return m_debugName; }
 

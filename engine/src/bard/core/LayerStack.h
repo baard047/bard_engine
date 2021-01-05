@@ -39,7 +39,7 @@ public:
 
 private:
     Layers m_layers;
-    Layers::iterator m_layerInsert;
+    uint32_t m_layerInsertIndex;
 };
 
 }

@@ -8,12 +8,19 @@
 
 #include <Engine.h>
 
+#include <imgui.h>
+
 class ExampleLayer : public bard::Layer
 {
 public:
-    ExampleLayer() : bard::Layer("Example") {}
+    ExampleLayer() : bard::Layer("Example Layer") {}
 
-    void update() override { }
+    void onImGuiRender() override
+    {
+        ImGui::Begin(m_debugName.c_str());
+        ImGui::Text("Smth going on in actual application");
+        ImGui::End();
+    }
 };
 
 class Sandbox final : public bard::Application
@@ -22,7 +29,7 @@ public:
     Sandbox()
     {
         pushLayer( new ExampleLayer{} );
-        pushOverlay( new bard::ImGuiLayer{} );
+//        pushOverlay( new bard::ImGuiLayer{} );
         LOG_INFO( "Hello from application" );
     }
 };

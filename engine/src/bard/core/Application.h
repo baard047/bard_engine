@@ -11,6 +11,7 @@
 #include "WindowInterface.h"
 #include <bard/events/ApplicationEvent.h>
 #include <bard/core/LayerStack.h>
+#include <bard/core/imgui/ImGuiLayer.h>
 
 namespace bard
 {
@@ -36,6 +37,7 @@ private:
     LayerStack m_layerStack;
     Events::Manager::Ptr m_eventBuss;
     WindowInterface::Ptr m_window;
+    ImGuiLayer * m_ImGuiLayer;
 
     bool m_running;
 

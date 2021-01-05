@@ -19,12 +19,16 @@ namespace bard {
 Application::Application()
         : m_eventBuss( std::make_shared< Events::Manager >() ),
           m_window( Linux::Window::create( { "Bard Engine", 1280, 720 } ) ),
+          m_ImGuiLayer( new ImGuiLayer{} ),
           m_running( true )
 {
     //TODO temp, proper singleton
     BARD_CORE_ASSERT( !m_instance, "Application already exist" );
     m_instance = this;
     m_window->setEventCallback( m_eventBuss );
+
+    pushOverlay( m_ImGuiLayer );
+
     m_eventBuss->subscribe( this, &Application::onWindowCloseEvent );
 }
 
@@ -37,8 +41,13 @@ void Application::run()
 
         for( auto layer : m_layerStack )
         {
-            layer->update();
+            layer->onUpdate();
         }
+
+        m_ImGuiLayer->begin();
+        for( auto layer : m_layerStack ) { layer->onImGuiRender(); }
+        m_ImGuiLayer->end();
+
         m_window->update();
     }
 }
@@ -47,14 +56,14 @@ void Application::pushLayer( Layer * layer )
 {
     layer->setEventBuss( m_eventBuss );
     m_layerStack.pushLayer( layer );
-    layer->attach();
+    layer->onAttach();
 }
 
 void Application::pushOverlay( Layer * overlay )
 {
     overlay->setEventBuss( m_eventBuss );
     m_layerStack.pushOverlay( overlay );
-    overlay->attach();
+    overlay->onAttach();
 }
 
 bool Application::onWindowCloseEvent( Events::WindowClose & event )
