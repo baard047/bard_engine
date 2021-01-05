@@ -14,6 +14,7 @@ target_link_libraries( ${TARGET_NAME}
                        glfw ${OPENGL_glu_LIBRARY} ${GLFW_LIBRARIES}
                        glad
                        imgui
+                       glm
                        )
 
 if( ${CMAKE_BUILD_TYPE} MATCHES "Debug" )

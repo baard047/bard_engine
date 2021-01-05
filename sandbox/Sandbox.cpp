@@ -13,10 +13,7 @@ class ExampleLayer : public bard::Layer
 public:
     ExampleLayer() : bard::Layer("Example") {}
 
-    void update() override
-    {
-//        LOG_INFO( "ExampleLayer::Update" );
-    }
+    void update() override { }
 };
 
 class Sandbox final : public bard::Application

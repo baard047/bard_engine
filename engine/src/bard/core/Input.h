@@ -12,6 +12,7 @@
 #include "MouseCodes.h"
 
 #include <utility>
+#include <glm/vec2.hpp>
 
 namespace bard
 {
@@ -22,8 +23,7 @@ public:
     static bool isKeyPressed( KeyCode key);
 
     static bool isMouseButtonPressed( MouseCode button);
-    //TODO temp, use glm::vec2 later
-    static std::pair<float, float> getMousePosition();
+    static glm::vec2 getMousePosition();
     static float getMouseX();
     static float getMouseY();
 };
