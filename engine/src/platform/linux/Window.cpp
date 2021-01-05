@@ -12,7 +12,7 @@
 #include <bard/events/KeyEvent.h>
 #include <bard/events/MouseEvent.h>
 
-#include <glad/glad.h>
+#include <platform/openGL/OpenGlContext.h>
 
 namespace bard::Linux {
 
@@ -44,9 +44,9 @@ Window::Window( const WindowInterface::Properties & props )
     }
 
     m_window = glfwCreateWindow( ( int ) props.width, ( int ) props.height, props.title.c_str(), nullptr, nullptr );
-    glfwMakeContextCurrent( m_window );
-    int status = gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
-    BARD_CORE_ASSERT(status, "Failed to initialize GLAD");
+
+    m_context = std::make_unique< OpenGlContext >( m_window );
+    m_context->init();
 
     glfwSetWindowUserPointer( m_window, &m_data );
     setVSync( true );
@@ -155,7 +155,7 @@ void Window::setGLFWCallbacks()
 void Window::update()
 {
     glfwPollEvents();
-    glfwSwapBuffers( m_window );
+    m_context->swapBuffers();
 }
 
 uint32_t Window::getWidth() const
@@ -171,7 +171,6 @@ uint32_t Window::getHeight() const
 void Window::setEventCallback( EventBuss buss )
 {
     m_data.eventBuss = std::move( buss );
-
 }
 
 void Window::setVSync( bool enabled )

@@ -39,6 +39,8 @@ private:
     WindowInterface::Ptr m_window;
     ImGuiLayer * m_ImGuiLayer;
 
+    uint32_t m_vertexArray, m_vertexBuffer, m_indexBuffer;
+
     bool m_running;
 
 private:

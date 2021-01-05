@@ -20,8 +20,8 @@ namespace bard
 class Input
 {
 public:
+    //NOTE: definitions need to be done by a platform
     static bool isKeyPressed( KeyCode key);
-
     static bool isMouseButtonPressed( MouseCode button);
     static glm::vec2 getMousePosition();
     static float getMouseX();

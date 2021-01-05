@@ -9,8 +9,10 @@
 #pragma once
 
 #include <GLFW/glfw3.h>
+
 #include <bard/core/WindowInterface.h>
 #include <bard/events/Manager.h>
+#include <bard/renderer/GraphicsContext.h>
 
 namespace bard::Linux {
 
@@ -48,6 +50,7 @@ private:
     };
 
     GLFWwindow * m_window;
+    std::unique_ptr< GraphicsContext > m_context;
     WindowData m_data;
 };
 
