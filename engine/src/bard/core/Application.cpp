@@ -66,7 +66,7 @@ void Application::pushOverlay( Layer * overlay )
     overlay->onAttach();
 }
 
-bool Application::onWindowCloseEvent( Events::WindowClose & event )
+bool Application::onWindowCloseEvent( Events::WindowClose & )
 {
     m_running = false;
     return true;

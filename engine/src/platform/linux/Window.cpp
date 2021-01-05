@@ -79,7 +79,7 @@ void Window::setGLFWCallbacks()
         data->eventBuss->publish( event );
     });
 
-    glfwSetKeyCallback(m_window, [](GLFWwindow * window, int key, int scancode, int action, int modes)
+    glfwSetKeyCallback(m_window, [](GLFWwindow * window, int key, int /*scancode*/, int action, int /*modes*/)
     {
         auto data = static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 
@@ -114,7 +114,7 @@ void Window::setGLFWCallbacks()
         data->eventBuss->publish( event );
     });
 
-    glfwSetMouseButtonCallback(m_window, [](GLFWwindow * window, int button, int action, int modes)
+    glfwSetMouseButtonCallback(m_window, [](GLFWwindow * window, int button, int action, int /*modes*/)
     {
         auto data = static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 
