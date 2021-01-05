@@ -17,7 +17,7 @@ namespace bard::Linux {
 class Window : public WindowInterface
 {
 public:
-    //TODO maybe private, but in this case class should be final
+    //TODO maybe protected
     explicit Window( const WindowInterface::Properties & props );
     ~Window() override;
 
@@ -31,6 +31,8 @@ public:
     void setEventCallback( EventBuss buss ) override;
     void setVSync( bool enabled ) override;
     bool isVSync() const override;
+
+    void * getNativeWindow() const override;
 
 private:
     void setGLFWCallbacks();

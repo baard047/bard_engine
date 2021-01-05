@@ -26,9 +26,7 @@ public:
     void pushLayer( Layer * layer);
     void pushOverlay( Layer * overlay);
 
-    //TODO temp, proper singleton
     inline static Application & instance() { return *m_instance; }
-
     inline WindowInterface & window() { return *m_window; }
 
 private:
@@ -41,7 +39,7 @@ private:
 
     bool m_running;
 
-private: //TODO temp
+private:
     static Application * m_instance;
 };
 

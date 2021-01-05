@@ -41,7 +41,7 @@ void Logger::init()
 {
     static std::once_flag flag;
 
-    std::call_once( flag, []() noexcept
+    std::call_once( flag, [ this ]() noexcept
     {
         spdlog::init_thread_pool( 8192, 1 );
         spdlog::cfg::load_env_levels();
@@ -54,7 +54,7 @@ void Logger::init()
         auto logger = makeLogger( "Engine" );
         spdlog::set_default_logger( logger );
 
-        s_defaultClientLogger = makeLogger( "Application" );
+        m_defaultLogger = makeLogger( "Application" );
     } );
 }
 
@@ -88,6 +88,6 @@ Logger::Ptr Logger::makeLogger( std::string_view name ) noexcept
     return logger;
 }
 
-Logger::Ptr Logger::s_defaultClientLogger;
+Logger::Logger() : Singleton( nullptr ) {}
 
 }

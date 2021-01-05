@@ -14,22 +14,28 @@
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/ostr.h>
 
+#include <bard/core/utils/Singletone.h>
+
 namespace bard::core {
 
-//TODO singletone
-class Logger
+class Logger : public Singleton< Logger >
 {
-private:
     using Ptr = std::shared_ptr< spdlog::logger >;
 
 public:
-    static void init();
-    static Ptr makeLogger( std::string_view name ) noexcept;
+    void init();
 
-    inline static const Ptr & defaultClientLogger() { return s_defaultClientLogger; }
+    inline const Ptr & defaultClientLogger() { return m_defaultLogger; }
 
 private:
-    static Ptr s_defaultClientLogger;
+    Ptr makeLogger( std::string_view name ) noexcept;
+
+private:
+    Ptr m_defaultLogger;
+
+private:
+    friend class Singleton< Logger >;
+    Logger();
 };
 
 }
@@ -43,9 +49,9 @@ private:
 #define CORE_LOG_ERROR( ... )  SPDLOG_ERROR( __VA_ARGS__ )
 #define CORE_LOG_CRITICAL( ... )  SPDLOG_CRITICAL( __VA_ARGS__ )
 
-#define LOG_TRACE( ... )  SPDLOG_LOGGER_TRACE( bard::core::Logger::defaultClientLogger(), __VA_ARGS__ )
-#define LOG_DEBUG( ... )  SPDLOG_LOGGER_DEBUG( bard::core::Logger::defaultClientLogger(), __VA_ARGS__ )
-#define LOG_INFO( ... )  SPDLOG_LOGGER_INFO( bard::core::Logger::defaultClientLogger(), __VA_ARGS__ )
-#define LOG_WARN( ... )  SPDLOG_LOGGER_WARN( bard::core::Logger::defaultClientLogger(), __VA_ARGS__ )
-#define LOG_ERROR( ... )  SPDLOG_LOGGER_ERROR( bard::core::Logger::defaultClientLogger(), __VA_ARGS__ )
-#define LOG_CRITICAL( ... )  SPDLOG_LOGGER_CRITICAL( bard::core::Logger::defaultClientLogger(), __VA_ARGS__ )
+#define LOG_TRACE( ... )  SPDLOG_LOGGER_TRACE( bard::core::Logger::instance().defaultClientLogger(), __VA_ARGS__ )
+#define LOG_DEBUG( ... )  SPDLOG_LOGGER_DEBUG( bard::core::Logger::instance().defaultClientLogger(), __VA_ARGS__ )
+#define LOG_INFO( ... )  SPDLOG_LOGGER_INFO( bard::core::Logger::instance().defaultClientLogger(), __VA_ARGS__ )
+#define LOG_WARN( ... )  SPDLOG_LOGGER_WARN( bard::core::Logger::instance().defaultClientLogger(), __VA_ARGS__ )
+#define LOG_ERROR( ... )  SPDLOG_LOGGER_ERROR( bard::core::Logger::instance().defaultClientLogger(), __VA_ARGS__ )
+#define LOG_CRITICAL( ... )  SPDLOG_LOGGER_CRITICAL( bard::core::Logger::instance().defaultClientLogger(), __VA_ARGS__ )

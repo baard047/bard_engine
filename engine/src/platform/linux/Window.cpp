@@ -190,4 +190,9 @@ WindowInterface::Ptr Window::create( const WindowInterface::Properties & props )
     return std::make_unique< Linux::Window >( props );
 }
 
+void * Window::getNativeWindow() const
+{
+    return m_window;
+}
+
 }

@@ -12,6 +12,8 @@
 
 #include <glad/glad.h> //TODO temp
 
+#include <bard/core/Input.h>
+
 namespace bard {
 
 Application::Application()
@@ -19,7 +21,8 @@ Application::Application()
           m_window( Linux::Window::create( { "Bard Engine", 1280, 720 } ) ),
           m_running( true )
 {
-    BARD_CORE_ASSERT( !m_instance, "Do a proper singleton, lazy dumbass" );
+    //TODO temp, proper singleton
+    BARD_CORE_ASSERT( !m_instance, "Application already exist" );
     m_instance = this;
     m_window->setEventCallback( m_eventBuss );
     m_eventBuss->subscribe( this, &Application::onWindowCloseEvent );
@@ -60,7 +63,6 @@ bool Application::onWindowCloseEvent( Events::WindowClose & event )
     return true;
 }
 
-//TODO rm
 Application * Application::m_instance = nullptr;
 
 }
