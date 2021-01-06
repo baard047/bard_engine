@@ -14,7 +14,7 @@
 #include <bard/core/imgui/ImGuiLayer.h>
 
 #include <bard/renderer/Shader.h> //TODO rm
-#include <bard/renderer/Buffer.h>
+#include <bard/renderer/buffer/Buffer.h>
 
 namespace bard
 {

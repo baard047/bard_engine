@@ -27,6 +27,7 @@ public:
     void popLayer( Layer * layer );
     void popOverlay( Layer * overlay );
 
+public:
     Layers::iterator begin() { return m_layers.begin(); }
     Layers::iterator end() { return m_layers.end(); }
     Layers::const_iterator cbegin() const { return m_layers.cbegin(); }

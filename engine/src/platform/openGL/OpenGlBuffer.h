@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <bard/renderer/Buffer.h>
+#include <bard/renderer/buffer/Buffer.h>
 
 namespace bard
 {

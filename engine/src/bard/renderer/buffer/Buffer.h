@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <cstdint>
+#include "Layout.h"
 
 namespace bard {
 
@@ -21,6 +21,18 @@ public:
 
     virtual void bind() const = 0;
     virtual void unbind() const = 0;
+
+    inline const BufferLayout & layout() const noexcept { return m_layout; }
+    inline void setLayout( BufferLayout && layout ) noexcept { m_layout = std::move( layout ); }
+
+    template< class ... Args >
+    void setLayout( Args && ... args )
+    {
+        m_layout = { std::forward< Args >( args ) ... };
+    }
+
+private:
+    BufferLayout m_layout;
 };
 
 class IndexBuffer

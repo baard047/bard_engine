@@ -9,7 +9,7 @@
 #include "Buffer.h"
 
 #include <bard/core/Base.h>
-#include "Renderer.h"
+#include "bard/renderer/Renderer.h"
 
 #include <platform/openGL/OpenGlBuffer.h>
 

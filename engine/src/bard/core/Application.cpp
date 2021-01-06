@@ -16,6 +16,32 @@
 
 namespace bard {
 
+namespace {
+
+GLenum convert( ShaderDataType type )
+{
+    switch ( type )
+    {
+        case ShaderDataType::Float:
+        case ShaderDataType::Float2:
+        case ShaderDataType::Float3:
+        case ShaderDataType::Float4:
+        case ShaderDataType::Mat3:
+        case ShaderDataType::Mat4:      return GL_FLOAT;
+        case ShaderDataType::Int:
+        case ShaderDataType::Int2:
+        case ShaderDataType::Int3:
+        case ShaderDataType::Int4:      return GL_INT;
+        case ShaderDataType::Bool:      return GL_BOOL;
+        case ShaderDataType::None:      break;
+    }
+
+    BARD_CORE_ASSERT( false, "Unknown shared type!" );
+    return 0;
+}
+
+}
+
 Application::Application()
         : m_eventBuss( std::make_shared< Events::Manager >() ),
           m_window( Linux::Window::create( { "Bard Engine", 1280, 720 } ) ),
@@ -35,17 +61,27 @@ Application::Application()
     glGenVertexArrays(1, &m_vertexArray);
     glBindVertexArray( m_vertexArray );
 
-    float vertices[ 3 * 3 ] =
+    float vertices[ 3 * 7 ] =
     {
-        -0.5f, -0.5f, 0.f,
-        0.5f, -0.5f, 0.f,
-        0.f, 0.5f, 0.f
+        -0.5f, -0.5f, 0.f, 0.8f, 0.2f, 0.8f, 1.f,
+        0.5f, -0.5f, 0.f, 0.2f, 0.3f, 0.8f, 1.f,
+        0.f, 0.5f, 0.f, 0.8f, 0.8f, 0.2f, 1.f,
     };
 
     m_vertexBuffer.reset( VertexBuffer::create( vertices, sizeof( vertices ) ) );
+    m_vertexBuffer->setLayout( BufferElement{ ShaderDataType::Float3, "a_Position" },
+                               BufferElement{ ShaderDataType::Float4, "a_Color" }
+    );
 
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+    const auto & layout = m_vertexBuffer->layout();
+    for( size_t index = 0; index < layout.size(); ++index )
+    {
+        const auto & elem = layout[index];
+        glEnableVertexAttribArray( index);
+        glVertexAttribPointer( index, elem.getComponentCount(), convert( elem.type ),
+                               elem.normalized ? GL_TRUE : GL_FALSE,
+                               layout.getStride(), ( const void * ) elem.offset );
+    }
 
     uint32_t indices[3] = { 0, 1, 2 };
     m_indexBuffer.reset( IndexBuffer::create(indices, sizeof(indices) / sizeof(uint32_t)) );
@@ -54,12 +90,15 @@ Application::Application()
         #version 330 core
 
         layout(location = 0) in vec3 a_Position;
+        layout(location = 1) in vec4 a_Color;
 
         out vec3 v_Position;
+        out vec4 v_Color;
 
         void main()
         {
             v_Position = a_Position;
+            v_Color = a_Color;
             gl_Position = vec4(a_Position, 1.0);
         }
     )";
@@ -70,10 +109,11 @@ Application::Application()
         layout(location = 0) out vec4 color;
 
         in vec3 v_Position;
+        in vec4 v_Color;
 
         void main()
         {
-            color = vec4(v_Position * 0.5 + 0.5, 1.0);
+            color = v_Color;
         }
     )";
 
