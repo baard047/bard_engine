@@ -13,13 +13,15 @@
 #include <bard/core/LayerStack.h>
 #include <bard/core/imgui/ImGuiLayer.h>
 
+#include <bard/renderer/Shader.h> //TODO rm
+#include <bard/renderer/Buffer.h>
+
 namespace bard
 {
 
 class Application
 {
 public:
-    Application();
     virtual ~Application() = default;
 
     void run();
@@ -30,6 +32,9 @@ public:
     inline static Application & instance() { return *m_instance; }
     inline WindowInterface & window() { return *m_window; }
 
+protected:
+    Application();
+
 private:
     bool onWindowCloseEvent( Events::WindowClose & event );
 
@@ -39,7 +44,11 @@ private:
     WindowInterface::Ptr m_window;
     ImGuiLayer * m_ImGuiLayer;
 
-    uint32_t m_vertexArray, m_vertexBuffer, m_indexBuffer;
+    //TODO rm
+    uint32_t m_vertexArray;
+    std::unique_ptr< Shader > m_shader;
+    std::unique_ptr< VertexBuffer > m_vertexBuffer;
+    std::unique_ptr< IndexBuffer > m_indexBuffer;
 
     bool m_running;
 

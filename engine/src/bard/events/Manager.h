@@ -113,7 +113,6 @@ public:
 
             if( handlers.empty() ) { subscribers.erase( found ); }
         }
-        //TODO rm
         else { BARD_CORE_ASSERT( "No subscribers for event type {0}", EventT::staticType ); }
     }
 
