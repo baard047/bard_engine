@@ -13,8 +13,9 @@
 #include <bard/core/LayerStack.h>
 #include <bard/core/imgui/ImGuiLayer.h>
 
-#include <bard/renderer/Shader.h> //TODO rm
+#include <bard/renderer/Shader.h>
 #include <bard/renderer/buffer/Buffer.h>
+#include <bard/renderer/VertexArray.h>
 
 namespace bard
 {
@@ -44,11 +45,11 @@ private:
     WindowInterface::Ptr m_window;
     ImGuiLayer * m_ImGuiLayer;
 
-    //TODO rm
-    uint32_t m_vertexArray;
-    std::unique_ptr< Shader > m_shader;
-    std::unique_ptr< VertexBuffer > m_vertexBuffer;
-    std::unique_ptr< IndexBuffer > m_indexBuffer;
+    Shader::Ptr m_shader;
+    VertexArray::Ptr m_vertexArray;
+
+    Shader::Ptr m_shader2;
+    VertexArray::Ptr m_squareVertexArray;
 
     bool m_running;
 

@@ -10,37 +10,9 @@
 
 #include <platform/linux/Window.h>
 
-#include <glad/glad.h> //TODO temp
-
-#include <bard/core/Input.h>
+#include <glad/glad.h>
 
 namespace bard {
-
-namespace {
-
-GLenum convert( ShaderDataType type )
-{
-    switch ( type )
-    {
-        case ShaderDataType::Float:
-        case ShaderDataType::Float2:
-        case ShaderDataType::Float3:
-        case ShaderDataType::Float4:
-        case ShaderDataType::Mat3:
-        case ShaderDataType::Mat4:      return GL_FLOAT;
-        case ShaderDataType::Int:
-        case ShaderDataType::Int2:
-        case ShaderDataType::Int3:
-        case ShaderDataType::Int4:      return GL_INT;
-        case ShaderDataType::Bool:      return GL_BOOL;
-        case ShaderDataType::None:      break;
-    }
-
-    BARD_CORE_ASSERT( false, "Unknown shared type!" );
-    return 0;
-}
-
-}
 
 Application::Application()
         : m_eventBuss( std::make_shared< Events::Manager >() ),
@@ -58,9 +30,6 @@ Application::Application()
     m_eventBuss->subscribe( this, &Application::onWindowCloseEvent );
 
     ///////
-    glGenVertexArrays(1, &m_vertexArray);
-    glBindVertexArray( m_vertexArray );
-
     float vertices[ 3 * 7 ] =
     {
         -0.5f, -0.5f, 0.f, 0.8f, 0.2f, 0.8f, 1.f,
@@ -68,22 +37,32 @@ Application::Application()
         0.f, 0.5f, 0.f, 0.8f, 0.8f, 0.2f, 1.f,
     };
 
-    m_vertexBuffer.reset( VertexBuffer::create( vertices, sizeof( vertices ) ) );
-    m_vertexBuffer->setLayout( { { ShaderDataType::Float3, "a_Position" },
-                                 { ShaderDataType::Float4, "a_Color" } } );
-
-    const auto & layout = m_vertexBuffer->layout();
-    for( size_t index = 0; index < layout.size(); ++index )
-    {
-        const auto & elem = layout[index];
-        glEnableVertexAttribArray( index);
-        glVertexAttribPointer( index, elem.getComponentCount(), convert( elem.type ),
-                               elem.normalized ? GL_TRUE : GL_FALSE,
-                               layout.getStride(), ( const void * ) elem.offset );
-    }
+    m_vertexArray = VertexArray::create();
+    auto vertexBuffer = VertexBuffer::create( vertices, sizeof( vertices ) );
+    vertexBuffer->setLayout( { { ShaderDataType::Float3, "a_Position" },
+                               { ShaderDataType::Float4, "a_Color" } } );
 
     uint32_t indices[3] = { 0, 1, 2 };
-    m_indexBuffer.reset( IndexBuffer::create(indices, sizeof(indices) / sizeof(uint32_t)) );
+    m_vertexArray->addVertexBuffer( vertexBuffer );
+    m_vertexArray->setIndexBuffer( IndexBuffer::create(indices, sizeof(indices) / sizeof(uint32_t)) );
+
+    ////////
+
+    float squareVertices[3 * 4] =
+    {
+        -0.65f, -0.65f, 0.f,
+        0.65f, -0.65f, 0.f,
+        0.65f, 0.65f, 0.f,
+        -0.65f, 0.65f, 0.f
+    };
+
+    uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
+
+    m_squareVertexArray = VertexArray::create();
+    auto squareVB = VertexBuffer::create( squareVertices, sizeof( squareVertices ),
+                                          { { ShaderDataType::Float3, "a_Position" } } );
+    m_squareVertexArray->addVertexBuffer( squareVB );
+    m_squareVertexArray->setIndexBuffer( IndexBuffer::create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)) );
 
     std::string vertexSrc = R"(
         #version 330 core
@@ -116,7 +95,36 @@ Application::Application()
         }
     )";
 
-    m_shader = std::make_unique< Shader >( vertexSrc, fragmentSrc );
+    m_shader = std::make_shared< Shader >( vertexSrc, fragmentSrc );
+
+    std::string vertexSrc2 = R"(
+        #version 330 core
+
+        layout(location = 0) in vec3 a_Position;
+
+        out vec3 v_Position;
+
+        void main()
+        {
+            v_Position = a_Position;
+            gl_Position = vec4(a_Position, 1.0);
+        }
+    )";
+
+    std::string fragmentSrc2 = R"(
+        #version 330 core
+
+        layout(location = 0) out vec4 color;
+
+        in vec3 v_Position;
+
+        void main()
+        {
+            color = vec4(0.4, 0.8, 0.8, 1.0);
+        }
+    )";
+
+    m_shader2 = std::make_shared< Shader >( vertexSrc2, fragmentSrc2 );
     ///////
 }
 
@@ -128,9 +136,14 @@ void Application::run()
         glClear(GL_COLOR_BUFFER_BIT);
 
         ///////
+        m_shader2->bind();
+        m_squareVertexArray->bind();
+        glDrawElements( GL_TRIANGLES, m_squareVertexArray->getIndexBuffer()->getCount(), GL_UNSIGNED_INT, nullptr );
+
+
         m_shader->bind();
-        glBindVertexArray( m_vertexArray );
-        glDrawElements( GL_TRIANGLES, m_indexBuffer->getCount(), GL_UNSIGNED_INT, nullptr );
+        m_vertexArray->bind();
+        glDrawElements( GL_TRIANGLES, m_vertexArray->getIndexBuffer()->getCount(), GL_UNSIGNED_INT, nullptr );
         ///////
 
         for( auto layer : m_layerStack )

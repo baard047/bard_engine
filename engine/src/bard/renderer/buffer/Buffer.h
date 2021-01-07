@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <memory>
 #include "Layout.h"
 
 namespace bard {
@@ -16,7 +17,11 @@ namespace Base {
 class VertexBuffer
 {
 public:
-    static VertexBuffer * create( float * vertices, uint32_t size );
+    using Ptr = std::shared_ptr< VertexBuffer >;
+
+public:
+    static VertexBuffer::Ptr create( float * vertices, uint32_t size );
+    static VertexBuffer::Ptr create( float * vertices, uint32_t size, BufferLayout && layout );
 
     virtual ~VertexBuffer() = default;
 
@@ -40,7 +45,10 @@ protected:
 class IndexBuffer
 {
 public:
-    static IndexBuffer * create( uint32_t * indices, uint32_t count );
+    using Ptr = std::shared_ptr< IndexBuffer >;
+
+public:
+    static IndexBuffer::Ptr create( uint32_t * indices, uint32_t count );
 
     virtual ~IndexBuffer() = default;
 
