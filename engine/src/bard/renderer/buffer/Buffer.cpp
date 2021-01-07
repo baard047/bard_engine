@@ -11,7 +11,7 @@
 #include <bard/core/Base.h>
 #include "bard/renderer/Renderer.h"
 
-#include <platform/openGL/OpenGlBuffer.h>
+#include <platform/openGL/Buffer.h>
 
 namespace bard::Base {
 

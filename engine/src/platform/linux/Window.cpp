@@ -12,7 +12,7 @@
 #include <bard/events/KeyEvent.h>
 #include <bard/events/MouseEvent.h>
 
-#include <platform/openGL/OpenGlContext.h>
+#include <platform/openGL/Context.h>
 
 namespace bard::Linux {
 

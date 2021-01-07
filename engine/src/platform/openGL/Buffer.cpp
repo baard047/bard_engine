@@ -6,7 +6,7 @@
  * \time : 15:29
  */
 
-#include "OpenGlBuffer.h"
+#include "Buffer.h"
 
 #include <glad/glad.h>
 
