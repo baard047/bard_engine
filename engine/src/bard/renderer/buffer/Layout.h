@@ -47,8 +47,8 @@ public:
 
     Elements::iterator begin() { return m_elements.begin(); }
     Elements::iterator end() { return m_elements.end(); }
-    Elements::const_iterator cbegin() const { return m_elements.cbegin(); }
-    Elements::const_iterator cend() const { return m_elements.cend(); }
+    Elements::const_iterator begin() const { return m_elements.cbegin(); }
+    Elements::const_iterator end() const { return m_elements.cend(); }
 
 private:
     void calculateOffsetsAndStride()

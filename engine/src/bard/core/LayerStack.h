@@ -30,8 +30,8 @@ public:
 public:
     Layers::iterator begin() { return m_layers.begin(); }
     Layers::iterator end() { return m_layers.end(); }
-    Layers::const_iterator cbegin() const { return m_layers.cbegin(); }
-    Layers::const_iterator cend() const { return m_layers.cend(); }
+    Layers::const_iterator begin() const { return m_layers.cbegin(); }
+    Layers::const_iterator end() const { return m_layers.cend(); }
 
     Layers::reverse_iterator rbegin() { return m_layers.rbegin(); }
     Layers::reverse_iterator rend() { return m_layers.rend(); }

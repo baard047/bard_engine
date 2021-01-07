@@ -10,29 +10,29 @@
 
 #include <glad/glad.h>
 
-namespace bard
+namespace bard::OpenGL
 {
 
 ////////////////////////////// VertexBuffer //////////////////////////////
 
-OpenGLVertexBuffer::OpenGLVertexBuffer( float * vertices, uint32_t size )
+VertexBuffer::VertexBuffer( float * vertices, uint32_t size )
 {
-    glCreateBuffers( 1, &m_rendererID );
-    glBindBuffer( GL_ARRAY_BUFFER, m_rendererID );
+    glCreateBuffers( 1, &m_buffer );
+    glBindBuffer( GL_ARRAY_BUFFER, m_buffer );
     glBufferData( GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW );
 }
 
-OpenGLVertexBuffer::~OpenGLVertexBuffer()
+VertexBuffer::~VertexBuffer()
 {
-    glDeleteBuffers(1, &m_rendererID );
+    glDeleteBuffers(1, &m_buffer );
 }
 
-void OpenGLVertexBuffer::bind() const
+void VertexBuffer::bind() const
 {
-    glBindBuffer( GL_ARRAY_BUFFER, m_rendererID );
+    glBindBuffer( GL_ARRAY_BUFFER, m_buffer );
 }
 
-void OpenGLVertexBuffer::unbind() const
+void VertexBuffer::unbind() const
 {
     glBindBuffer( GL_ARRAY_BUFFER, 0 );
 }
@@ -40,25 +40,25 @@ void OpenGLVertexBuffer::unbind() const
 
 ////////////////////////////// IndexBuffer //////////////////////////////
 
-OpenGLIndexBuffer::OpenGLIndexBuffer( uint32_t * indices, uint32_t count )
+IndexBuffer::IndexBuffer( uint32_t * indices, uint32_t count )
     : m_count( count )
 {
-    glCreateBuffers( 1, &m_rendererID );
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_rendererID );
+    glCreateBuffers( 1, &m_buffer );
+    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_buffer );
     glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof( uint32_t ) * count, indices, GL_STATIC_DRAW );
 }
 
-OpenGLIndexBuffer::~OpenGLIndexBuffer()
+IndexBuffer::~IndexBuffer()
 {
-    glDeleteBuffers(1, &m_rendererID );
+    glDeleteBuffers(1, &m_buffer );
 }
 
-void OpenGLIndexBuffer::bind() const
+void IndexBuffer::bind() const
 {
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_rendererID );
+    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_buffer );
 }
 
-void OpenGLIndexBuffer::unbind() const
+void IndexBuffer::unbind() const
 {
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
 }

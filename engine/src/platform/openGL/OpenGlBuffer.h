@@ -10,30 +10,29 @@
 
 #include <bard/renderer/buffer/Buffer.h>
 
-namespace bard
+namespace bard::OpenGL
 {
 
-class OpenGLVertexBuffer : public VertexBuffer
+using VertexBufferObject = uint32_t;
+
+class VertexBuffer : public Base::VertexBuffer
 {
 public:
-    using RendererId = uint32_t;
-
-public:
-    OpenGLVertexBuffer( float * vertices, uint32_t size );
-    ~OpenGLVertexBuffer() override;
+    VertexBuffer( float * vertices, uint32_t size );
+    ~VertexBuffer() override;
 
     void bind() const override;
     void unbind() const override;
 
 private:
-    RendererId m_rendererID = 0;
+    VertexBufferObject m_buffer = 0;
 };
 
-class OpenGLIndexBuffer : public IndexBuffer
+class IndexBuffer : public Base::IndexBuffer
 {
 public:
-    OpenGLIndexBuffer( uint32_t * indices, uint32_t count );
-    ~OpenGLIndexBuffer() override;
+    IndexBuffer( uint32_t * indices, uint32_t count );
+    ~IndexBuffer() override;
 
     void bind() const override;
     void unbind() const override;
@@ -41,7 +40,7 @@ public:
     uint32_t getCount() const override { return m_count; }
 
 private:
-    OpenGLVertexBuffer::RendererId m_rendererID = 0;
+    VertexBufferObject m_buffer = 0;
     uint32_t m_count;
 };
 

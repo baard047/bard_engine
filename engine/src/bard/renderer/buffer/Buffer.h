@@ -11,6 +11,7 @@
 #include "Layout.h"
 
 namespace bard {
+namespace Base {
 
 class VertexBuffer
 {
@@ -22,16 +23,17 @@ public:
     virtual void bind() const = 0;
     virtual void unbind() const = 0;
 
-    inline const BufferLayout & layout() const noexcept { return m_layout; }
-    inline void setLayout( BufferLayout && layout ) noexcept { m_layout = std::move( layout ); }
-
-    template< class ... Args >
-    void setLayout( Args && ... args )
+    inline const BufferLayout & layout() const noexcept
     {
-        m_layout = { std::forward< Args >( args ) ... };
+        return m_layout;
     }
 
-private:
+    inline void setLayout( BufferLayout && layout ) noexcept
+    {
+        m_layout = std::move( layout );
+    }
+
+protected:
     BufferLayout m_layout;
 };
 
@@ -47,5 +49,10 @@ public:
 
     virtual uint32_t getCount() const = 0;
 };
+
+}
+
+using VertexBuffer = Base::VertexBuffer;
+using IndexBuffer = Base::IndexBuffer;
 
 }

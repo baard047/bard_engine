@@ -1,5 +1,5 @@
 /*
- * \file OpenGlContext.h
+ * \file Context.h
  * \copyright (C) 2021 Special Technological Center Ltd
  * \author : Bardashevsky A.K.
  * \date : 05.01.2021
@@ -12,13 +12,13 @@
 
 struct GLFWwindow;
 
-namespace bard
+namespace bard::OpenGL
 {
 
-class OpenGlContext : public GraphicsContext
+class Context : public GraphicsContext
 {
 public:
-    explicit OpenGlContext( GLFWwindow * handle ) noexcept;
+    explicit Context( GLFWwindow * handle ) noexcept;
 
     void init() override;
     void swapBuffers() override;

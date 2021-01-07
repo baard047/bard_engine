@@ -45,7 +45,7 @@ Window::Window( const WindowInterface::Properties & props )
 
     m_window = glfwCreateWindow( ( int ) props.width, ( int ) props.height, props.title.c_str(), nullptr, nullptr );
 
-    m_context = std::make_unique< OpenGlContext >( m_window );
+    m_context = std::make_unique< OpenGL::Context >( m_window );
     m_context->init();
 
     glfwSetWindowUserPointer( m_window, &m_data );

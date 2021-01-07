@@ -69,9 +69,8 @@ Application::Application()
     };
 
     m_vertexBuffer.reset( VertexBuffer::create( vertices, sizeof( vertices ) ) );
-    m_vertexBuffer->setLayout( BufferElement{ ShaderDataType::Float3, "a_Position" },
-                               BufferElement{ ShaderDataType::Float4, "a_Color" }
-    );
+    m_vertexBuffer->setLayout( { { ShaderDataType::Float3, "a_Position" },
+                                 { ShaderDataType::Float4, "a_Color" } } );
 
     const auto & layout = m_vertexBuffer->layout();
     for( size_t index = 0; index < layout.size(); ++index )

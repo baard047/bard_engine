@@ -13,15 +13,17 @@
 
 #include <platform/openGL/OpenGlBuffer.h>
 
-namespace bard
-{
+namespace bard::Base {
 
 VertexBuffer * VertexBuffer::create( float * vertices, uint32_t size )
 {
     switch ( Renderer::API )
     {
-        case RendererAPI::None: BARD_CORE_ASSERT(false, "RendererAPI::None"); return nullptr;
-        case RendererAPI::OpenGL: return new OpenGLVertexBuffer( vertices, size );
+        case RendererAPI::None:
+        BARD_CORE_ASSERT( false, "RendererAPI::None" );
+            return nullptr;
+        case RendererAPI::OpenGL:
+            return new OpenGL::VertexBuffer( vertices, size );
     }
     return nullptr;
 }
@@ -30,9 +32,13 @@ IndexBuffer * IndexBuffer::create( uint32_t * indices, uint32_t count )
 {
     switch ( Renderer::API )
     {
-        case RendererAPI::None: BARD_CORE_ASSERT(false, "RendererAPI::None"); return nullptr;
-        case RendererAPI::OpenGL: return new OpenGLIndexBuffer( indices, count );
+        case RendererAPI::None:
+        BARD_CORE_ASSERT( false, "RendererAPI::None" );
+            return nullptr;
+        case RendererAPI::OpenGL:
+            return new OpenGL::IndexBuffer( indices, count );
     }
     return nullptr;
 }
+
 }
