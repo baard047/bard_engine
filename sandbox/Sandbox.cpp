@@ -14,16 +14,17 @@ class ExampleLayer : public bard::Layer
 {
 public:
     ExampleLayer()
-            : bard::Layer( "Example Layer" )
+            : bard::Layer( "Example Layer" ),
+              m_camera( -1.6f, 1.6f, -0.9f, 0.9f )
     {
         using namespace bard;
 
         float vertices[ 3 * 7 ] =
-                {
-                        -0.5f, -0.5f, 0.f, 0.8f, 0.2f, 0.8f, 1.f,
-                        0.5f, -0.5f, 0.f, 0.2f, 0.3f, 0.8f, 1.f,
-                        0.f, 0.5f, 0.f, 0.8f, 0.8f, 0.2f, 1.f,
-                };
+        {
+             -0.5f, -0.5f, 0.f, 0.8f, 0.2f, 0.8f, 1.f,
+             0.5f, -0.5f, 0.f, 0.2f, 0.3f, 0.8f, 1.f,
+             0.f, 0.5f, 0.f, 0.8f, 0.8f, 0.2f, 1.f,
+        };
 
         m_triangleVA = VertexArray::create();
         auto vertexBuffer = VertexBuffer::create( vertices, sizeof( vertices ) );
@@ -36,12 +37,12 @@ public:
 
         ///
         float squareVertices[3 * 4] =
-                {
-                        -0.65f, -0.65f, 0.f,
-                        0.65f, -0.65f, 0.f,
-                        0.65f, 0.65f, 0.f,
-                        -0.65f, 0.65f, 0.f
-                };
+        {
+            -0.65f, -0.65f, 0.f,
+            0.65f, -0.65f, 0.f,
+            0.65f, 0.65f, 0.f,
+            -0.65f, 0.65f, 0.f
+        };
 
         uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
 
@@ -57,6 +58,8 @@ public:
             layout(location = 0) in vec3 a_Position;
             layout(location = 1) in vec4 a_Color;
 
+            uniform mat4 u_viewProjection;
+
             out vec3 v_Position;
             out vec4 v_Color;
 
@@ -64,7 +67,7 @@ public:
             {
                 v_Position = a_Position;
                 v_Color = a_Color;
-                gl_Position = vec4(a_Position, 1.0);
+                gl_Position = u_viewProjection * vec4(a_Position, 1.0);
             }
         )";
 
@@ -89,12 +92,14 @@ public:
 
             layout(location = 0) in vec3 a_Position;
 
+            uniform mat4 u_viewProjection;
+
             out vec3 v_Position;
 
             void main()
             {
                 v_Position = a_Position;
-                gl_Position = vec4(a_Position, 1.0);
+                gl_Position = u_viewProjection * vec4(a_Position, 1.0);
             }
         )";
 
@@ -126,13 +131,13 @@ public:
         bard::RenderCommand::setClearColor( { 0.1f, 0.1f, 0.1f, 1 } );
         bard::RenderCommand::clear();
 
-        bard::Renderer::beginScene();
+        m_camera.setPosition({0.5f, 0.5f, 0.f});
+        m_camera.setRotation( 45.0f );
 
-        m_squareShader->bind();
-        bard::Renderer::submit( m_squareVA );
+        bard::Renderer::beginScene( m_camera );
 
-        m_triangleShader->bind();
-        bard::Renderer::submit( m_triangleVA );
+        bard::Renderer::submit( m_squareShader, m_squareVA );
+        bard::Renderer::submit( m_triangleShader, m_triangleVA );
 
         bard::Renderer::endScene();;
     }
@@ -143,6 +148,8 @@ private:
 
     bard::Shader::Ptr m_squareShader;
     bard::VertexArray::Ptr m_squareVA;
+
+    bard::OrthographicCamera m_camera;
 };
 
 class Sandbox final : public bard::Application

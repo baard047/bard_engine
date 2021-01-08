@@ -10,6 +10,7 @@
 #include <bard/core/Base.h>
 
 #include <glad/glad.h>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace bard {
 
@@ -79,30 +80,30 @@ Shader::Shader( const std::string & vertexSource, const std::string & fragmentSo
 
 // Vertex and fragment shaders are successfully compiled.
 // Now time to link them together into a program.
-// Get a m_rendererID object.
-    m_rendererID = glCreateProgram();
+// Get a m_program object.
+    m_program = glCreateProgram();
 
 // Attach our shaders to our program
-    glAttachShader( m_rendererID, vertexShader );
-    glAttachShader( m_rendererID, fragmentShader );
+    glAttachShader( m_program, vertexShader );
+    glAttachShader( m_program, fragmentShader );
 
 // Link our program
-    glLinkProgram( m_rendererID );
+    glLinkProgram( m_program );
 
 // Note the different functions here: glGetProgram* instead of glGetShader*.
     GLint isLinked = 0;
-    glGetProgramiv( m_rendererID, GL_LINK_STATUS, ( int * ) &isLinked );
+    glGetProgramiv( m_program, GL_LINK_STATUS, ( int * ) &isLinked );
     if( isLinked == GL_FALSE )
     {
         GLint maxLength = 0;
-        glGetProgramiv( m_rendererID, GL_INFO_LOG_LENGTH, &maxLength );
+        glGetProgramiv( m_program, GL_INFO_LOG_LENGTH, &maxLength );
 
         // The maxLength includes the NULL character
         std::vector< GLchar > infoLog( maxLength );
-        glGetProgramInfoLog( m_rendererID, maxLength, &maxLength, &infoLog[ 0 ] );
+        glGetProgramInfoLog( m_program, maxLength, &maxLength, &infoLog[ 0 ] );
 
-        // We don't need the m_rendererID anymore.
-        glDeleteProgram( m_rendererID );
+        // We don't need the m_program anymore.
+        glDeleteProgram( m_program );
         // Don't leak shaders either.
         glDeleteShader( vertexShader );
         glDeleteShader( fragmentShader );
@@ -113,23 +114,29 @@ Shader::Shader( const std::string & vertexSource, const std::string & fragmentSo
     }
 
 // Always detach shaders after a successful link.
-    glDetachShader( m_rendererID, vertexShader );
-    glDetachShader( m_rendererID, fragmentShader );
+    glDetachShader( m_program, vertexShader );
+    glDetachShader( m_program, fragmentShader );
 }
 
 Shader::~Shader()
 {
-    glDeleteProgram( m_rendererID );
+    glDeleteProgram( m_program );
 }
 
 void Shader::bind() const
 {
-    glUseProgram( m_rendererID );
+    glUseProgram( m_program );
 }
 
 void Shader::unbind() const
 {
     glUseProgram( 0 );
+}
+
+void Shader::setMat4( const std::string & name, const glm::mat4 & matrix )
+{
+    GLint location = glGetUniformLocation( m_program, name.c_str() );
+    glUniformMatrix4fv( location, 1, GL_FALSE, glm::value_ptr( matrix ) );
 }
 
 }
