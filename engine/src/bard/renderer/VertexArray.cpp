@@ -16,11 +16,10 @@ namespace bard::Base
 
 VertexArray::Ptr VertexArray::create()
 {
-    switch ( Renderer::API )
+    switch ( Renderer::getAPI() )
     {
-        case RendererAPI::None:
-        BARD_CORE_ASSERT( false, "RendererAPI::None" ); return nullptr;
-        case RendererAPI::OpenGL: return std::make_shared< OpenGL::VertexArray>();
+        case RendererAPI::API::None: BARD_CORE_ASSERT( false, "RendererAPI::None" ); return nullptr;
+        case RendererAPI::API::OpenGL: return std::make_shared< OpenGL::VertexArray>();
     }
     return nullptr;
 }

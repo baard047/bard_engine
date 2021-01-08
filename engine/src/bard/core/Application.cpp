@@ -9,8 +9,7 @@
 #include "Application.h"
 
 #include <platform/linux/Window.h>
-
-#include <glad/glad.h>
+#include <bard/renderer/Renderer.h>
 
 namespace bard {
 
@@ -132,19 +131,18 @@ void Application::run()
 {
     while( m_running )
     {
-        glClearColor(0.1f, 0.1f, 0.1f, 1);
-        glClear(GL_COLOR_BUFFER_BIT);
+        RenderCommand::setClearColor( { 0.1f, 0.1f, 0.1f, 1 } );
+        RenderCommand::clear();
 
-        ///////
+        Renderer::beginScene();
+
         m_shader2->bind();
-        m_squareVertexArray->bind();
-        glDrawElements( GL_TRIANGLES, m_squareVertexArray->getIndexBuffer()->getCount(), GL_UNSIGNED_INT, nullptr );
-
+        Renderer::submit( m_squareVertexArray );
 
         m_shader->bind();
-        m_vertexArray->bind();
-        glDrawElements( GL_TRIANGLES, m_vertexArray->getIndexBuffer()->getCount(), GL_UNSIGNED_INT, nullptr );
-        ///////
+        Renderer::submit( m_vertexArray );
+
+        Renderer::endScene();;
 
         for( auto layer : m_layerStack )
         {

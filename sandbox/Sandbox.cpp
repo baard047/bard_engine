@@ -1,5 +1,5 @@
 /*
- * \file rd.h
+ * \file Sandbox.cpp
  * \copyright (C) 2020 Special Technological Center Ltd
  * \author : Bardashevsky A.K.
  * \date : 20.12.2020

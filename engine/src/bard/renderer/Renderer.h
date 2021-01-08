@@ -9,21 +9,20 @@
 #pragma once
 
 #include <cstdint>
+#include "RenderCommand.h"
 
 namespace bard
 {
 
-enum class RendererAPI : uint_least8_t
-{
-    None = 0, OpenGL
-};
-
 class Renderer
 {
 public:
-    //temporary
-    static constexpr RendererAPI API = RendererAPI::OpenGL;
-};
+    static void beginScene();
+    static void endScene();
 
+    static void submit( const VertexArray::Ptr & vertexArray );
+
+    inline static RendererAPI::API getAPI() noexcept { return RendererAPI::getAPI();  }
+};
 
 }

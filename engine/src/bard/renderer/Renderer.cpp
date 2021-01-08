@@ -1,5 +1,5 @@
 /*
- * \file Renderer.cpp.cc
+ * \file Renderer.cpp
  * \copyright (C) 2021 Special Technological Center Ltd
  * \author : Bardashevsky A.K.
  * \date : 06.01.2021
@@ -8,3 +8,23 @@
 
 #include "Renderer.h"
 
+namespace bard
+{
+
+void Renderer::beginScene()
+{
+
+}
+
+void Renderer::endScene()
+{
+
+}
+
+void Renderer::submit( const VertexArray::Ptr & vertexArray )
+{
+    vertexArray->bind();
+    RenderCommand::drawIndexed( vertexArray );
+}
+
+}

@@ -17,12 +17,12 @@ namespace bard::Base {
 
 VertexBuffer::Ptr VertexBuffer::create( float * vertices, uint32_t size )
 {
-    switch ( Renderer::API )
+    switch ( Renderer::getAPI() )
     {
-        case RendererAPI::None:
+        case RendererAPI::API::None:
         BARD_CORE_ASSERT( false, "RendererAPI::None" );
             return nullptr;
-        case RendererAPI::OpenGL:
+        case RendererAPI::API::OpenGL:
             return std::make_shared< OpenGL::VertexBuffer >( vertices, size );
     }
     return nullptr;
@@ -37,12 +37,12 @@ VertexBuffer::Ptr VertexBuffer::create( float * vertices, uint32_t size, BufferL
 
 IndexBuffer::Ptr IndexBuffer::create( uint32_t * indices, uint32_t count )
 {
-    switch ( Renderer::API )
+    switch ( Renderer::getAPI() )
     {
-        case RendererAPI::None:
+        case RendererAPI::API::None:
         BARD_CORE_ASSERT( false, "RendererAPI::None" );
             return nullptr;
-        case RendererAPI::OpenGL:
+        case RendererAPI::API::OpenGL:
             return std::make_shared< OpenGL::IndexBuffer >( indices, count );
     }
     return nullptr;
