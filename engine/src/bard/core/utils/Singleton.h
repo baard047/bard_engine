@@ -18,9 +18,7 @@ class Singleton
 {
 public:
     Singleton() = delete;
-
     Singleton( const Singleton & ) = delete;
-
     Singleton & operator =( const Singleton & ) = delete;
 
     static HeirT & get()

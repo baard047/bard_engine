@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include "bard/core/Application.h"
 #include <bard/core/EntryPoint.h>
+#include "bard/core/Application.h"
 #include <bard/core/imgui/ImGuiLayer.h>
 #include <bard/renderer/Renderer.h>
 #include <bard/renderer/camera/OrthographicCamera.h>

@@ -159,11 +159,15 @@ public:
     {
         pushLayer( new ExampleLayer{} );
 //        pushOverlay( new bard::ImGuiLayer{} );
-        LOG_INFO( "Hello from application" );
+        LOG_INFO("Sandbox has been created!");
     }
 };
 
-bard::Application * bard::createApplication()
+
+int main( int argc, char ** argv )
 {
-    return new Sandbox{};
+    bard::EntryPoint entryPoint;
+    entryPoint.run( new Sandbox{} );
+
+    return 0;
 }

@@ -8,18 +8,39 @@
 
 #pragma once
 
-#include <bard/core/Base.h>
+#include "Application.h"
+#include "Base.h"
 
-extern bard::Application * bard::createApplication();
-
-int main( int argc, char ** argv )
+namespace bard
 {
-    bard::core::Logger::get().init();
-    CORE_LOG_INFO("================ Running bard engine ================");
 
-    auto app = bard::createApplication();
-    app->run();
-    delete app;
+struct EntryPoint
+{
+    explicit EntryPoint( )
+    {
+         bard::core::Logger::get().init();
+         CORE_LOG_INFO("================ Running bard engine ================");
+    }
 
-    return 0;
+    inline void run( Application * application )
+    {
+        if( m_application )
+        {
+            BARD_CORE_ASSERT(false, "Application already running!");
+            delete m_application;
+        }
+
+        m_application = application;
+        m_application->run();
+    }
+
+    ~EntryPoint()
+    {
+        delete m_application;
+    }
+
+private:
+    Application * m_application = nullptr;
+};
+
 }

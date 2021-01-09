@@ -20,7 +20,12 @@ namespace bard::core {
 
 namespace {
 constexpr auto DEFAULT_LOGS_FOLDER = "./logs/";
-constexpr auto DEFAULT_PATTERN = "[%d-%m-%-Y %H:%M:%S.%e] [%^%l%$] %n: %v";
+constexpr auto DEFAULT_PATTERN =
+#ifdef BARD_SHOW_SOURCE_IN_LOG
+        "[%d-%m-%-Y %H:%M:%S.%e] [%^%s:%# %l%$] %n: %v";
+#else
+        "[%d-%m-%-Y %H:%M:%S.%e] [%^%l%$] %n: %v";
+#endif
 constexpr auto MEGABYTE = 1024 * 1024;
 
 struct ConsoleMutex final

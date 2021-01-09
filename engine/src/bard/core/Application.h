@@ -46,8 +46,6 @@ private:
     static Application * m_instance;
 };
 
-Application * createApplication();
-
 }
 
 

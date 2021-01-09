@@ -19,5 +19,6 @@ target_link_libraries( ${TARGET_NAME}
 
 if( ${CMAKE_BUILD_TYPE} MATCHES "Debug" )
 	target_compile_definitions(${TARGET_NAME} PUBLIC BARD_ENABLE_ASSERTS)
+	target_compile_definitions(${TARGET_NAME} PUBLIC BARD_SHOW_SOURCE_IN_LOG)
 endif()
 target_compile_definitions(${TARGET_NAME} PRIVATE GLFW_INCLUDE_NONE)
