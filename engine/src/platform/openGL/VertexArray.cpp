@@ -10,7 +10,9 @@
 
 #include <glad/glad.h>
 
-namespace bard::OpenGL {
+namespace OpenGL {
+
+using namespace bard;
 
 namespace {
 

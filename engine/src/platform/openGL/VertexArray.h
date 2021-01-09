@@ -10,9 +10,9 @@
 
 #include <bard/renderer/VertexArray.h>
 
-namespace bard::OpenGL {
+namespace OpenGL {
 
-class VertexArray : public Base::VertexArray
+class VertexArray : public bard::VertexArray
 {
     using VertexArrayObject = uint32_t;
 
@@ -23,15 +23,15 @@ public:
     void bind() const override;
     void unbind() const override;
 
-    void addVertexBuffer( const VertexBuffer::Ptr & vertexBuffer ) override;
-    void setIndexBuffer( const IndexBuffer::Ptr & indexBuffer ) override;
+    void addVertexBuffer( const bard::VertexBuffer::Ptr & vertexBuffer ) override;
+    void setIndexBuffer( const bard::IndexBuffer::Ptr & indexBuffer ) override;
 
     const VertexBuffers & getVertexBuffers() const override;
-    const IndexBuffer::Ptr & getIndexBuffer() const override;
+    const bard::IndexBuffer::Ptr & getIndexBuffer() const override;
 
 private:
     VertexBuffers m_vertexBuffers;
-    IndexBuffer::Ptr m_indexBuffer;
+    bard::IndexBuffer::Ptr m_indexBuffer;
     VertexArrayObject m_buffer;
 };
 

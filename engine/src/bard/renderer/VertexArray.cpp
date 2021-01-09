@@ -11,7 +11,7 @@
 
 #include <platform/openGL/VertexArray.h>
 
-namespace bard::Base
+namespace bard
 {
 
 VertexArray::Ptr VertexArray::create()

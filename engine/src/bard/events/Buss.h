@@ -1,5 +1,5 @@
 /*
- * \file Manager.h
+ * \file Buss.h
  * \copyright (C) 2020 Special Technological Center Ltd
  * \author : Bardashevsky A.K.
  * \date : 26.12.2020
@@ -17,6 +17,7 @@
 
 #include <bard/core/Base.h>
 #include <bard/core/utils/SFINAE.h>
+#include <bard/core/utils/Singleton.h>
 
 namespace bard::Events {
 
@@ -62,12 +63,9 @@ private:
 
 }
 
-class Manager
+class Buss : public Singleton< Buss >
 {
     using Handlers = std::vector< detail::FunctionWrapper::Ptr >;
-
-public:
-    using Ptr = std::shared_ptr< Manager >;
 
 public:
     template< class EventT, class = SFINAE::IsBaseOf< Event, EventT > >
@@ -115,6 +113,10 @@ public:
         }
         else { BARD_CORE_ASSERT( "No subscribers for event type {0}", EventT::staticType ); }
     }
+
+private:
+    Buss() : Singleton( nullptr ) {}
+    friend class Singleton< Buss >;
 
 private:
     std::unordered_map< Events::Type, Handlers > subscribers;

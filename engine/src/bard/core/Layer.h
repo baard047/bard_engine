@@ -9,7 +9,6 @@
 #pragma once
 
 #include "Base.h"
-#include <bard/events/Manager.h>
 
 namespace bard
 {
@@ -21,12 +20,6 @@ public:
             : m_debugName( std::move( layerName ) ) { }
 
     virtual ~Layer() = default;
-
-    inline void setEventBuss( Events::Manager::Ptr buss ) noexcept
-    {
-        m_eventBuss = std::move( buss );
-        setupConnections();
-    }
 
     //function to implement on client side.
     virtual void setupConnections() {}
@@ -43,7 +36,6 @@ public:
 
 protected:
     std::string m_debugName;
-    Events::Manager::Ptr m_eventBuss;
 };
 
 }

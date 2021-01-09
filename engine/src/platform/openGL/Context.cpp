@@ -12,7 +12,7 @@
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 
-namespace bard::OpenGL {
+namespace OpenGL {
 
 Context::Context( GLFWwindow * handle ) noexcept
         : m_windowHandle( handle )

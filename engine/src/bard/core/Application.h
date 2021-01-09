@@ -13,10 +13,6 @@
 #include <bard/core/LayerStack.h>
 #include <bard/core/imgui/ImGuiLayer.h>
 
-#include <bard/renderer/Shader.h>
-#include <bard/renderer/buffer/Buffer.h>
-#include <bard/renderer/VertexArray.h>
-
 namespace bard
 {
 
@@ -41,15 +37,8 @@ private:
 
 private:
     LayerStack m_layerStack;
-    Events::Manager::Ptr m_eventBuss;
     WindowInterface::Ptr m_window;
     ImGuiLayer * m_ImGuiLayer;
-
-    Shader::Ptr m_shader;
-    VertexArray::Ptr m_vertexArray;
-
-    Shader::Ptr m_shader2;
-    VertexArray::Ptr m_squareVertexArray;
 
     bool m_running;
 

@@ -10,22 +10,21 @@
 
 #include <platform/linux/Window.h>
 #include <bard/renderer/Renderer.h>
+#include <bard/events/Buss.h>
 
 namespace bard {
 
 Application::Application()
-        : m_eventBuss( std::make_shared< Events::Manager >() ),
-          m_window( Linux::Window::create( { "Bard Engine", 1280, 720 } ) ),
+        : m_window( Linux::Window::create( { "Bard Engine", 1280, 720 } ) ),
           m_ImGuiLayer( new ImGuiLayer{} ),
           m_running( true )
 {
     BARD_CORE_ASSERT( !m_instance, "Application already exist" );
     m_instance = this;
-    m_window->setEventCallback( m_eventBuss );
 
     pushOverlay( m_ImGuiLayer );
 
-    m_eventBuss->subscribe( this, &Application::onWindowCloseEvent );
+    Events::Buss::get().subscribe( this, &Application::onWindowCloseEvent );
 }
 
 void Application::run()
@@ -52,14 +51,12 @@ void Application::run()
 
 void Application::pushLayer( Layer * layer )
 {
-    layer->setEventBuss( m_eventBuss );
     m_layerStack.pushLayer( layer );
     layer->onAttach();
 }
 
 void Application::pushOverlay( Layer * overlay )
 {
-    overlay->setEventBuss( m_eventBuss );
     m_layerStack.pushOverlay( overlay );
     overlay->onAttach();
 }

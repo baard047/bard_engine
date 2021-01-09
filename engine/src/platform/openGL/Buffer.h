@@ -10,12 +10,12 @@
 
 #include <bard/renderer/buffer/Buffer.h>
 
-namespace bard::OpenGL
+namespace OpenGL
 {
 
 using VertexBufferObject = uint32_t;
 
-class VertexBuffer : public Base::VertexBuffer
+class VertexBuffer : public bard::VertexBuffer
 {
 public:
     VertexBuffer( float * vertices, uint32_t size );
@@ -28,7 +28,7 @@ private:
     VertexBufferObject m_buffer = 0;
 };
 
-class IndexBuffer : public Base::IndexBuffer
+class IndexBuffer : public bard::IndexBuffer
 {
 public:
     IndexBuffer( uint32_t * indices, uint32_t count );

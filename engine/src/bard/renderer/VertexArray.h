@@ -14,8 +14,6 @@
 
 namespace bard
 {
-namespace Base
-{
 
 class VertexArray
 {
@@ -36,9 +34,5 @@ public:
     virtual const VertexBuffers & getVertexBuffers() const = 0;
     virtual const IndexBuffer::Ptr & getIndexBuffer() const = 0;
 };
-
-}
-
-using VertexArray = Base::VertexArray;
 
 }

@@ -9,8 +9,6 @@
 #pragma once
 
 #include "Base.h"
-#include <bard/events/Event.h>
-#include <bard/events/Manager.h>
 
 namespace bard
 {
@@ -19,7 +17,6 @@ class WindowInterface
 {
 public:
     using Ptr = std::unique_ptr< WindowInterface >;
-    using EventBuss = Events::Manager::Ptr;
 
 public:
     struct Properties
@@ -40,7 +37,6 @@ public:
 
     virtual void update() = 0;
 
-    virtual void setEventCallback( EventBuss buss ) = 0;
     virtual void setVSync( bool enabled ) = 0;
     virtual bool isVSync() const = 0;
 

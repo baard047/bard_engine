@@ -8,6 +8,7 @@
 
 #include "Window.h"
 
+#include <bard/events/Buss.h>
 #include <bard/events/ApplicationEvent.h>
 #include <bard/events/KeyEvent.h>
 #include <bard/events/MouseEvent.h>
@@ -68,87 +69,76 @@ void Window::setGLFWCallbacks()
         data->height = height;
 
         Events::WindowResize event( width, height );
-        data->eventBuss->publish( event );
+        Events::Buss::get().publish(event);
     });
 
-    glfwSetWindowCloseCallback(m_window, [](GLFWwindow * window)
+    glfwSetWindowCloseCallback(m_window, [](GLFWwindow * /*window*/)
     {
-        auto data = static_cast<WindowData*>(glfwGetWindowUserPointer(window));
-
         Events::WindowClose event;
-        data->eventBuss->publish( event );
+        Events::Buss::get().publish( event );
     });
 
-    glfwSetKeyCallback(m_window, [](GLFWwindow * window, int key, int /*scancode*/, int action, int /*modes*/)
+    glfwSetKeyCallback(m_window, [](GLFWwindow * /*window*/, int key, int /*scancode*/, int action, int /*modes*/)
     {
-        auto data = static_cast<WindowData*>(glfwGetWindowUserPointer(window));
-
         switch (action)
         {
             case GLFW_PRESS:
             {
                 Events::KeyPressed event(key, 0);
-                data->eventBuss->publish( event );
+                Events::Buss::get().publish( event );
                 break;
             }
             case GLFW_RELEASE:
             {
                 Events::KeyReleased event(key);
-                data->eventBuss->publish( event );
+                Events::Buss::get().publish( event );
                 break;
             }
             case GLFW_REPEAT:
             {
                 Events::KeyPressed event(key, 1);
-                data->eventBuss->publish( event );
+                Events::Buss::get().publish( event );
                 break;
             }
+            default: break;
         }
     });
 
-    glfwSetCharCallback(m_window, [](GLFWwindow * window, unsigned int keycode)
+    glfwSetCharCallback(m_window, [](GLFWwindow * /*window*/, unsigned int keycode)
     {
-        auto data = static_cast<WindowData*>(glfwGetWindowUserPointer(window));
-
         Events::KeyTyped event( static_cast< int >( keycode ) );
-        data->eventBuss->publish( event );
+        Events::Buss::get().publish( event );
     });
 
-    glfwSetMouseButtonCallback(m_window, [](GLFWwindow * window, int button, int action, int /*modes*/)
+    glfwSetMouseButtonCallback(m_window, [](GLFWwindow * /*window*/, int button, int action, int /*modes*/)
     {
-        auto data = static_cast<WindowData*>(glfwGetWindowUserPointer(window));
-
         switch (action)
         {
             case GLFW_PRESS:
             {
                 Events::MouseButtonPressed event(button);
-                data->eventBuss->publish( event );
+                Events::Buss::get().publish( event );
                 break;
             }
             case GLFW_RELEASE:
             {
                 Events::MouseButtonReleased event(button);
-                data->eventBuss->publish( event );
+                Events::Buss::get().publish( event );
                 break;
             }
         }
     });
 
-    glfwSetScrollCallback(m_window, [](GLFWwindow * window, double xOffset, double yOffset)
+    glfwSetScrollCallback(m_window, [](GLFWwindow * /*window*/, double xOffset, double yOffset)
     {
-        auto data = static_cast<WindowData*>(glfwGetWindowUserPointer(window));
-
         Events::MouseScrolled event((float)xOffset, (float)yOffset);
-        data->eventBuss->publish( event );
+        Events::Buss::get().publish( event );
     });
 
-    glfwSetCursorPosCallback(m_window, [](GLFWwindow * window, double x, double y)
+    glfwSetCursorPosCallback(m_window, [](GLFWwindow * /*window*/, double x, double y)
     {
-        auto data = static_cast<WindowData*>(glfwGetWindowUserPointer(window));
-
         Events::MouseMoved event( (float)x, (float)y );
-        data->eventBuss->publish( event );
+        Events::Buss::get().publish( event );
     });
 }
 
@@ -168,11 +158,6 @@ uint32_t Window::getHeight() const
     return m_data.height;
 }
 
-void Window::setEventCallback( EventBuss buss )
-{
-    m_data.eventBuss = std::move( buss );
-}
-
 void Window::setVSync( bool enabled )
 {
     glfwSwapInterval( enabled ? 1 : 0 );
@@ -186,7 +171,7 @@ bool Window::isVSync() const
 
 WindowInterface::Ptr Window::create( const WindowInterface::Properties & props )
 {
-    return std::make_unique< Linux::Window >( props );
+    return std::unique_ptr< Linux::Window >( new Linux::Window( props ) );
 }
 
 void * Window::getNativeWindow() const

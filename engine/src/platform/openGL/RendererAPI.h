@@ -10,15 +10,15 @@
 
 #include <bard/renderer/RendererAPI.h>
 
-namespace bard::OpenGL
+namespace OpenGL
 {
 
-class RendererAPI : public Base::RendererAPI
+class RendererAPI : public bard::RendererAPI
 {
 public:
     void setClearColor( const glm::vec4 & color ) override;
     void clear() override;
-    void drawIndexed( const VertexArray::Ptr & vertexArray ) override;
+    void drawIndexed( const bard::VertexArray::Ptr & vertexArray ) override;
 };
 
 }

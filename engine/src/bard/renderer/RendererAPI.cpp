@@ -8,7 +8,7 @@
 
 #include "RendererAPI.h"
 
-namespace bard::Base
+namespace bard
 {
 
 //TODO init

@@ -12,7 +12,6 @@
 #include "Layout.h"
 
 namespace bard {
-namespace Base {
 
 class VertexBuffer
 {
@@ -57,10 +56,5 @@ public:
 
     virtual uint32_t getCount() const = 0;
 };
-
-}
-
-using VertexBuffer = Base::VertexBuffer;
-using IndexBuffer = Base::IndexBuffer;
 
 }

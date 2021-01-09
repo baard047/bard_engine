@@ -13,7 +13,7 @@
 
 #include <platform/openGL/Buffer.h>
 
-namespace bard::Base {
+namespace bard {
 
 VertexBuffer::Ptr VertexBuffer::create( float * vertices, uint32_t size )
 {

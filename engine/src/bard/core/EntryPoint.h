@@ -14,7 +14,7 @@ extern bard::Application * bard::createApplication();
 
 int main( int argc, char ** argv )
 {
-    bard::core::Logger::instance().init();
+    bard::core::Logger::get().init();
     CORE_LOG_INFO("================ Running bard engine ================");
 
     auto app = bard::createApplication();

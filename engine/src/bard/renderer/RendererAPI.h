@@ -13,8 +13,6 @@
 
 namespace bard
 {
-namespace Base
-{
 
 class RendererAPI
 {
@@ -37,9 +35,5 @@ public:
 private:
     static API s_API;
 };
-
-}
-
-using RendererAPI = Base::RendererAPI;
 
 }

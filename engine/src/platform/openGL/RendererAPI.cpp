@@ -10,7 +10,7 @@
 
 #include <glad/glad.h>
 
-namespace bard::OpenGL
+namespace OpenGL
 {
 
 void RendererAPI::setClearColor( const glm::vec4 & color )
@@ -23,7 +23,7 @@ void RendererAPI::clear()
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 }
 
-void RendererAPI::drawIndexed( const VertexArray::Ptr & vertexArray )
+void RendererAPI::drawIndexed( const bard::VertexArray::Ptr & vertexArray )
 {
     glDrawElements( GL_TRIANGLES, vertexArray->getIndexBuffer()->getCount(), GL_UNSIGNED_INT, nullptr );
 }

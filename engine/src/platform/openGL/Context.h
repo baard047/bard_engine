@@ -12,10 +12,10 @@
 
 struct GLFWwindow;
 
-namespace bard::OpenGL
+namespace OpenGL
 {
 
-class Context : public GraphicsContext
+class Context : public bard::GraphicsContext
 {
 public:
     explicit Context( GLFWwindow * handle ) noexcept;

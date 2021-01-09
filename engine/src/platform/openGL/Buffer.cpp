@@ -10,7 +10,7 @@
 
 #include <glad/glad.h>
 
-namespace bard::OpenGL
+namespace OpenGL
 {
 
 ////////////////////////////// VertexBuffer //////////////////////////////

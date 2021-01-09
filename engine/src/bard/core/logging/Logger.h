@@ -14,7 +14,7 @@
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/ostr.h>
 
-#include <bard/core/utils/Singletone.h>
+#include <bard/core/utils/Singleton.h>
 
 namespace bard::core {
 
@@ -49,9 +49,9 @@ private:
 #define CORE_LOG_ERROR( ... )  SPDLOG_ERROR( __VA_ARGS__ )
 #define CORE_LOG_CRITICAL( ... )  SPDLOG_CRITICAL( __VA_ARGS__ )
 
-#define LOG_TRACE( ... )  SPDLOG_LOGGER_TRACE( bard::core::Logger::instance().defaultClientLogger(), __VA_ARGS__ )
-#define LOG_DEBUG( ... )  SPDLOG_LOGGER_DEBUG( bard::core::Logger::instance().defaultClientLogger(), __VA_ARGS__ )
-#define LOG_INFO( ... )  SPDLOG_LOGGER_INFO( bard::core::Logger::instance().defaultClientLogger(), __VA_ARGS__ )
-#define LOG_WARN( ... )  SPDLOG_LOGGER_WARN( bard::core::Logger::instance().defaultClientLogger(), __VA_ARGS__ )
-#define LOG_ERROR( ... )  SPDLOG_LOGGER_ERROR( bard::core::Logger::instance().defaultClientLogger(), __VA_ARGS__ )
-#define LOG_CRITICAL( ... )  SPDLOG_LOGGER_CRITICAL( bard::core::Logger::instance().defaultClientLogger(), __VA_ARGS__ )
+#define LOG_TRACE( ... )  SPDLOG_LOGGER_TRACE( bard::core::Logger::get().defaultClientLogger(), __VA_ARGS__ )
+#define LOG_DEBUG( ... )  SPDLOG_LOGGER_DEBUG( bard::core::Logger::get().defaultClientLogger(), __VA_ARGS__ )
+#define LOG_INFO( ... )  SPDLOG_LOGGER_INFO( bard::core::Logger::get().defaultClientLogger(), __VA_ARGS__ )
+#define LOG_WARN( ... )  SPDLOG_LOGGER_WARN( bard::core::Logger::get().defaultClientLogger(), __VA_ARGS__ )
+#define LOG_ERROR( ... )  SPDLOG_LOGGER_ERROR( bard::core::Logger::get().defaultClientLogger(), __VA_ARGS__ )
+#define LOG_CRITICAL( ... )  SPDLOG_LOGGER_CRITICAL( bard::core::Logger::get().defaultClientLogger(), __VA_ARGS__ )

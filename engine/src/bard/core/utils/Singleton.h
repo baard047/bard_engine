@@ -23,7 +23,7 @@ public:
 
     Singleton & operator =( const Singleton & ) = delete;
 
-    static HeirT & instance()
+    static HeirT & get()
     {
         if( !m_instance )
         {
