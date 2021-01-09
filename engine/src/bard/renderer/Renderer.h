@@ -23,7 +23,8 @@ public:
     static void beginScene( OrthographicCamera & camera );
     static void endScene();
 
-    static void submit( const Shader::Ptr & shader, const VertexArray::Ptr & vertexArray );
+    static void submit( const Shader::Ptr & shader, const VertexArray::Ptr & vertexArray,
+                        const glm::mat4 & transform = glm::mat4(1.0f) );
 
     inline static RendererAPI::API getAPI() noexcept { return RendererAPI::getAPI();  }
 

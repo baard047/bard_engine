@@ -21,10 +21,12 @@ void Renderer::endScene()
 
 }
 
-void Renderer::submit( const Shader::Ptr & shader, const VertexArray::Ptr & vertexArray )
+void Renderer::submit( const Shader::Ptr & shader, const VertexArray::Ptr & vertexArray,
+                       const glm::mat4 & transform )
 {
     shader->bind();
     shader->setMat4( "u_viewProjection", m_sceneData->viewProjectionMatrix );
+    shader->setMat4( "u_Transform", transform );
 
     vertexArray->bind();
     RenderCommand::drawIndexed( vertexArray );

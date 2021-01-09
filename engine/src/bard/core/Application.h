@@ -40,6 +40,7 @@ private:
     WindowInterface::Ptr m_window;
     ImGuiLayer * m_ImGuiLayer;
 
+    float m_lastFrameTime;
     bool m_running;
 
 private:

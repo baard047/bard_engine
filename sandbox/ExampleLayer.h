@@ -1,0 +1,35 @@
+/*
+ * \file ExampleLayer.h
+ * \copyright (C) 2021 Special Technological Center Ltd
+ * \author : Bardashevsky A.K.
+ * \date : 09.01.2021
+ * \time : 18:05
+ */
+
+#pragma once
+
+#include <Engine.h>
+#include <imgui.h>
+
+class ExampleLayer : public bard::Layer
+{
+public:
+    ExampleLayer();
+
+    void onImGuiRender() override;
+    void onRender() override;
+    void onUpdate( bard::Timestep ts ) override;
+
+private:
+    bard::Shader::Ptr m_triangleShader;
+    bard::VertexArray::Ptr m_triangleVA;
+
+    bard::Shader::Ptr m_squareShader;
+    bard::VertexArray::Ptr m_squareVA;
+
+    glm::vec3 m_trianglePos = { 0.f, 0.f, 0.f };
+    glm::vec3 m_squaresColor = { 0.4f, 0.8f, 0.8f };
+
+    bard::CameraController m_cameraController;
+};
+

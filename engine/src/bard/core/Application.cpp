@@ -9,8 +9,9 @@
 #include "Application.h"
 
 #include <platform/linux/Window.h>
-#include <bard/renderer/Renderer.h>
+#include <bard/core/utils/Timestep.h>
 #include <bard/events/Buss.h>
+
 
 namespace bard {
 
@@ -31,9 +32,13 @@ void Application::run()
 {
     while( m_running )
     {
+        auto time = static_cast< float >( glfwGetTime() );
+        Timestep timestep { time - m_lastFrameTime };
+        m_lastFrameTime = time;
+
         for( auto layer : m_layerStack )
         {
-            layer->onUpdate();
+            layer->onUpdate( timestep );
         }
 
         for( auto layer : m_layerStack )

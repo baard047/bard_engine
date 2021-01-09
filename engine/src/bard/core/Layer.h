@@ -9,6 +9,7 @@
 #pragma once
 
 #include "Base.h"
+#include <bard/core/utils/Timestep.h>
 
 namespace bard
 {
@@ -27,7 +28,7 @@ public:
     virtual void onAttach() {}
     virtual void onDetach() {}
 
-    virtual void onUpdate() {}
+    virtual void onUpdate( Timestep ) {}
     virtual void onRender() {}
 
     virtual void onImGuiRender() {}
