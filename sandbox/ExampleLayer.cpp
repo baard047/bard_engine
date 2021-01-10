@@ -84,7 +84,7 @@ ExampleLayer::ExampleLayer()
         }
     )";
 
-    m_triangleShader = std::make_shared< Shader >( triangleVertexSrc, triangleFragmentSrc );
+    m_triangleShader = Shader::create("Triangle Shader", triangleVertexSrc, triangleFragmentSrc );
 
     std::string rectangleVertexSrc = R"(
         #version 330 core
@@ -118,7 +118,7 @@ ExampleLayer::ExampleLayer()
 			}
     )";
 
-    m_squareShader = std::make_shared< Shader >( rectangleVertexSrc, rectangleFragmentSrc );
+    m_squareShader = Shader::create( "Flat color shader", rectangleVertexSrc, rectangleFragmentSrc );
 }
 
 void ExampleLayer::onRender()
@@ -151,10 +151,12 @@ void ExampleLayer::onRender()
 
 void ExampleLayer::onImGuiRender()
 {
-    ImGui::Begin( m_debugName.c_str() );
+    constexpr static auto flags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_DockNodeHost | ImGuiWindowFlags_NoMove;
+    ImGui::Begin( m_debugName.c_str(), nullptr, flags );
     ImGui::Text("Triangle Position ");
-    ImGui::SliderFloat( "x", &m_trianglePos.x, -2.0f, 2.0f);
-    ImGui::SliderFloat( "y", &m_trianglePos.y, -2.0f, 2.0f);
+    ImGui::SliderFloat( "x", &m_trianglePos.x, -5.0f, 5.0f);
+    ImGui::SliderFloat( "y", &m_trianglePos.y, -5.0f, 5.0f);
+    ImGui::Spacing(); ImGui::Spacing();
     ImGui::ColorEdit3( "Squares Color", glm::value_ptr( m_squaresColor ) );
     ImGui::End();
 }

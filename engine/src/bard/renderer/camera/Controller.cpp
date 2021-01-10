@@ -105,7 +105,9 @@ void CameraController::setZoomLevel( float level ) noexcept
 
 bool CameraController::onMouseScrolled( Events::MouseScrolled & event )
 {
-    m_zoomLevel -= event.yOffset * 0.25f;
+    const float zoomSpeed = Input::isKeyPressed( Key::LeftAlt ) ? 1.5f : 0.25f;
+
+    m_zoomLevel -= event.yOffset * zoomSpeed;
     m_zoomLevel = std::max( m_zoomLevel, 0.25f );
     setCameraProjection();
 
