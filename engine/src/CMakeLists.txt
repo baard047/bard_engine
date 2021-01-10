@@ -7,8 +7,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pthread")
 file( GLOB_RECURSE HEADER_FILES "*.h" "*.hpp" )
 file( GLOB_RECURSE SOURCE_FILES "*.cpp" )
 
-add_library( ${TARGET_NAME} STATIC ${HEADER_FILES} ${SOURCE_FILES} )
-target_include_directories(${TARGET_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} )
+add_library( ${TARGET_NAME} STATIC ${HEADER_FILES} ${SOURCE_FILES} ${STB_IMAGE_FILES} )
+target_include_directories(${TARGET_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${STB_DIR} )
 target_link_libraries( ${TARGET_NAME}
                        spdlog_header_only
                        glfw ${OPENGL_glu_LIBRARY} ${GLFW_LIBRARIES}

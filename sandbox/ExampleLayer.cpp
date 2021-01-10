@@ -17,6 +17,13 @@ ExampleLayer::ExampleLayer()
 {
     using namespace bard;
 
+//    float vertices[3 * 7] =
+//    {
+//        -0.5f, -0.5f, 0.f, 0.8f, 0.2f, 0.8f, 1.f,
+//        0.5f, -0.5f, 0.f, 0.2f, 0.3f, 0.8f, 1.f,
+//        0.f, 0.5f, 0.f, 0.8f, 0.8f, 0.2f, 1.f,
+//    };
+
     float vertices[3 * 7] =
     {
         -0.5f, -0.5f, 0.f, 0.8f, 0.2f, 0.8f, 1.f,
@@ -34,19 +41,20 @@ ExampleLayer::ExampleLayer()
     m_triangleVA->setIndexBuffer( IndexBuffer::create( indices, sizeof( indices ) / sizeof( uint32_t ) ) );
 
     ///
-    float squareVertices[3 * 4] =
+    float squareVertices[5 * 4] =
     {
-        -0.5f, -0.5f, 0.f,
-         0.5f, -0.5f, 0.f,
-         0.5f,  0.5f, 0.f,
-        -0.5f,  0.5f, 0.f
+        -0.5f, -0.5f, 0.f, 0.f, 0.f, //bottom left
+         0.5f, -0.5f, 0.f, 1.f, 0.f, //bottom right
+         0.5f,  0.5f, 0.f, 1.f, 1.f, //top right
+        -0.5f,  0.5f, 0.f, 0.f, 1.f  //top left
     };
 
     uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
 
     m_squareVA = VertexArray::create();
     auto squareVB = VertexBuffer::create( squareVertices, sizeof( squareVertices ),
-                                          { { ShaderDataType::Float3, "a_Position" } } );
+                                          { { ShaderDataType::Float3, "a_Position" },
+                                            { ShaderDataType::Float2, "a_TexCoord" } } );
     m_squareVA->addVertexBuffer( squareVB );
     m_squareVA->setIndexBuffer( IndexBuffer::create( squareIndices, sizeof( squareIndices ) / sizeof( uint32_t ) ) );
 
@@ -119,6 +127,48 @@ ExampleLayer::ExampleLayer()
     )";
 
     m_squareShader = Shader::create( "Flat color shader", rectangleVertexSrc, rectangleFragmentSrc );
+
+///////////
+
+    std::string textureVertexSrc = R"(
+        #version 330 core
+
+        layout(location = 0) in vec3 a_Position;
+        layout(location = 1) in vec2 a_TexCoord;
+
+        uniform mat4 u_viewProjection;
+        uniform mat4 u_Transform;
+
+        out vec2 v_TexCoord;
+
+        void main()
+        {
+            v_TexCoord = a_TexCoord;
+            gl_Position = u_viewProjection * u_Transform * vec4(a_Position, 1.0);
+        }
+    )";
+
+    std::string textureFragmentSrc = R"(
+        #version 330 core
+
+        layout(location = 0) out vec4 color;
+
+        in vec2 v_TexCoord;
+
+        uniform sampler2D u_Texture;
+
+        void main()
+        {
+        	color = texture(u_Texture, v_TexCoord);
+        }
+    )";
+
+    m_textureShader = Shader::create( "Texture shader", textureVertexSrc, textureFragmentSrc );
+
+    m_texture = bard::Texture2D::create("assets/textures/Checkerboard.png");
+
+    m_textureShader->bind();
+    m_textureShader->setInt( "u_Texture", 0 );
 }
 
 void ExampleLayer::onRender()
@@ -143,6 +193,11 @@ void ExampleLayer::onRender()
         }
     }
 
+    //Checkerboard
+    m_texture->bind();
+    bard::Renderer::submit( m_textureShader, m_squareVA,  glm::scale( glm::mat4(1.0f), glm::vec3(2.f) ) );
+
+    //Triangle
     glm::mat4 transform = glm::translate( glm::mat4(1.f), m_trianglePos );
     bard::Renderer::submit( m_triangleShader, m_triangleVA, transform );
 
@@ -152,12 +207,15 @@ void ExampleLayer::onRender()
 void ExampleLayer::onImGuiRender()
 {
     constexpr static auto flags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_DockNodeHost | ImGuiWindowFlags_NoMove;
+
     ImGui::Begin( m_debugName.c_str(), nullptr, flags );
+
     ImGui::Text("Triangle Position ");
     ImGui::SliderFloat( "x", &m_trianglePos.x, -5.0f, 5.0f);
     ImGui::SliderFloat( "y", &m_trianglePos.y, -5.0f, 5.0f);
     ImGui::Spacing(); ImGui::Spacing();
     ImGui::ColorEdit3( "Squares Color", glm::value_ptr( m_squaresColor ) );
+
     ImGui::End();
 }
 

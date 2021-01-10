@@ -7,7 +7,7 @@
  */
 
 #include "VertexArray.h"
-#include "bard/renderer/Renderer.h"
+#include <bard/renderer/Renderer.h>
 
 #include <platform/openGL/VertexArray.h>
 

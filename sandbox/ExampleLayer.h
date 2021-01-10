@@ -10,6 +10,7 @@
 
 #include <Engine.h>
 #include <imgui.h>
+#include <bard/renderer/Texture.h>
 
 class ExampleLayer : public bard::Layer
 {
@@ -26,6 +27,9 @@ private:
 
     bard::Shader::Ptr m_squareShader;
     bard::VertexArray::Ptr m_squareVA;
+
+    bard::Shader::Ptr m_textureShader;
+    bard::Texture2D::Ptr m_texture;
 
     glm::vec3 m_trianglePos = { 0.f, 0.f, 0.f };
     glm::vec3 m_squaresColor = { 0.4f, 0.8f, 0.8f };
