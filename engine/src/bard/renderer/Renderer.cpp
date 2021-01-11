@@ -11,6 +11,11 @@
 namespace bard
 {
 
+void Renderer::init()
+{
+    RenderCommand::init();
+}
+
 void Renderer::beginScene( OrthographicCamera & camera )
 {
     m_sceneData->viewProjectionMatrix = camera.viewProjectionMatrix();

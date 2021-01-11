@@ -9,9 +9,9 @@
 #include "Application.h"
 
 #include <platform/linux/Window.h>
+#include <bard/renderer/Renderer.h>
 #include <bard/core/utils/Timestep.h>
 #include <bard/events/Buss.h>
-
 
 namespace bard {
 
@@ -22,6 +22,7 @@ Application::Application()
 {
     BARD_CORE_ASSERT( !m_instance, "Application already exist" );
     m_instance = this;
+    Renderer::init();
 
     pushOverlay( m_ImGuiLayer );
 

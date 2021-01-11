@@ -29,9 +29,11 @@ private:
     bard::VertexArray::Ptr m_squareVA;
 
     bard::Shader::Ptr m_textureShader;
-    bard::Texture2D::Ptr m_texture;
+    bard::Texture2D::Ptr m_checkerboardTexture;
+    bard::Texture2D::Ptr m_shipTexture;
 
-    glm::vec3 m_trianglePos = { 0.f, 0.f, 0.f };
+    glm::vec3 m_trianglePos = { 1.f, 1.f, 1.f };
+    glm::vec3 m_shipPos = { 0.f, 0.f, 0.f };
     glm::vec3 m_squaresColor = { 0.4f, 0.8f, 0.8f };
 
     bard::CameraController m_cameraController;

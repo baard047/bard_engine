@@ -25,6 +25,8 @@ public:
 public:
     ~RendererAPI() = default;
 
+    virtual void init() = 0;
+
     inline static API getAPI() noexcept { return s_API; }
 
     virtual void setClearColor( const glm::vec4 & color ) = 0;

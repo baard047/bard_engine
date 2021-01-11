@@ -17,13 +17,6 @@ ExampleLayer::ExampleLayer()
 {
     using namespace bard;
 
-//    float vertices[3 * 7] =
-//    {
-//        -0.5f, -0.5f, 0.f, 0.8f, 0.2f, 0.8f, 1.f,
-//        0.5f, -0.5f, 0.f, 0.2f, 0.3f, 0.8f, 1.f,
-//        0.f, 0.5f, 0.f, 0.8f, 0.8f, 0.2f, 1.f,
-//    };
-
     float vertices[3 * 7] =
     {
         -0.5f, -0.5f, 0.f, 0.8f, 0.2f, 0.8f, 1.f,
@@ -165,7 +158,8 @@ ExampleLayer::ExampleLayer()
 
     m_textureShader = Shader::create( "Texture shader", textureVertexSrc, textureFragmentSrc );
 
-    m_texture = bard::Texture2D::create("assets/textures/Checkerboard.png");
+    m_checkerboardTexture = bard::Texture2D::create( "assets/textures/Checkerboard.png");
+    m_shipTexture = bard::Texture2D::create( "assets/textures/ship.png");
 
     m_textureShader->bind();
     m_textureShader->setInt( "u_Texture", 0 );
@@ -194,8 +188,14 @@ void ExampleLayer::onRender()
     }
 
     //Checkerboard
-    m_texture->bind();
+    m_checkerboardTexture->bind();
     bard::Renderer::submit( m_textureShader, m_squareVA,  glm::scale( glm::mat4(1.0f), glm::vec3(2.f) ) );
+
+    //ship
+    m_shipTexture->bind();
+    glm::mat4 shipTransform{ glm::translate( glm::mat4( 1.f ), m_shipPos )
+                             * glm::scale( glm::mat4( 1.0f ), glm::vec3( 0.7f ) ) };
+    bard::Renderer::submit( m_textureShader, m_squareVA, shipTransform );
 
     //Triangle
     glm::mat4 transform = glm::translate( glm::mat4(1.f), m_trianglePos );
@@ -210,10 +210,16 @@ void ExampleLayer::onImGuiRender()
 
     ImGui::Begin( m_debugName.c_str(), nullptr, flags );
 
-    ImGui::Text("Triangle Position ");
+    ImGui::Text("Triangle Position");
     ImGui::SliderFloat( "x", &m_trianglePos.x, -5.0f, 5.0f);
     ImGui::SliderFloat( "y", &m_trianglePos.y, -5.0f, 5.0f);
     ImGui::Spacing(); ImGui::Spacing();
+
+    ImGui::Text("Ship position");
+    ImGui::SliderFloat( "x pos", &m_shipPos.x, -10.0f, 10.0f);
+    ImGui::SliderFloat( "y pos", &m_shipPos.y, -10.0f, 10.0f);
+    ImGui::Spacing(); ImGui::Spacing();
+
     ImGui::ColorEdit3( "Squares Color", glm::value_ptr( m_squaresColor ) );
 
     ImGui::End();

@@ -16,6 +16,11 @@ namespace bard
 class RenderCommand
 {
 public:
+    inline static void init()
+    {
+        s_rendererAPI->init();
+    }
+
     inline static void drawIndexed( const VertexArray::Ptr & vertexArray )
     {
         s_rendererAPI->drawIndexed( vertexArray );
