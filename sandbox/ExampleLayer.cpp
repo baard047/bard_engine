@@ -172,6 +172,7 @@ void ExampleLayer::onRender()
 
     bard::Renderer::beginScene( m_cameraController.getCamera() );
 
+    //Squares
     m_squareShader->bind();
     m_squareShader->setFloat3( "u_Color", m_squaresColor );
 
@@ -191,7 +192,7 @@ void ExampleLayer::onRender()
     m_checkerboardTexture->bind();
     bard::Renderer::submit( m_textureShader, m_squareVA,  glm::scale( glm::mat4(1.0f), glm::vec3(2.f) ) );
 
-    //ship
+    //Ship
     m_shipTexture->bind();
     glm::mat4 shipTransform{ glm::translate( glm::mat4( 1.f ), m_shipPos )
                              * glm::scale( glm::mat4( 1.0f ), glm::vec3( 0.7f ) ) };
@@ -206,8 +207,11 @@ void ExampleLayer::onRender()
 
 void ExampleLayer::onImGuiRender()
 {
-    constexpr static auto flags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_DockNodeHost | ImGuiWindowFlags_NoMove;
+    constexpr static auto flags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_DockNodeHost
+                                  | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize
+                                  | ImGuiWindowFlags_NoSavedSettings;
 
+    ImGui::SetWindowPos( m_debugName.c_str(), { 0, 0 } );
     ImGui::Begin( m_debugName.c_str(), nullptr, flags );
 
     ImGui::Text("Triangle Position");

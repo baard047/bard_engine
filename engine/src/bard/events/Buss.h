@@ -23,6 +23,9 @@ namespace bard::Events {
 
 namespace detail {
 
+template< class SubscriberT, class EventT, class = SFINAE::IsBaseOf< Event, EventT > >
+using Callback = bool ( SubscriberT::* )( EventT & );
+
 struct FunctionWrapper
 {
     using Ptr = std::unique_ptr< FunctionWrapper >;
@@ -31,13 +34,11 @@ private:
     virtual bool call( Event & event ) = 0;
 };
 
-template< class SubscriberT, class EventT, class = SFINAE::IsBaseOf< Event, EventT > >
+template< class SubscriberT, class EventT >
 struct Handler : public FunctionWrapper
 {
-    using Callback = bool ( SubscriberT::* )( EventT & );
-
 public:
-    Handler( SubscriberT * const subscriber, Callback callback ) noexcept
+    Handler( SubscriberT * const subscriber, Callback< SubscriberT, EventT > callback ) noexcept
             : subscriber( subscriber ),
               callback( callback ) {}
 
@@ -58,7 +59,7 @@ public:
 
 private:
     SubscriberT * const subscriber;
-    Callback callback;
+    Callback< SubscriberT, EventT > callback;
 };
 
 }
@@ -86,10 +87,10 @@ public:
         }
     }
 
-    template< class SubscriberT, class EventT, class = SFINAE::IsBaseOf< Event, EventT > >
-    void subscribe( SubscriberT * subscriber, bool ( SubscriberT::*callBack )( EventT & ) )
+    template< class SubscriberT, class EventT >
+    void subscribe( SubscriberT * subscriber, detail::Callback< SubscriberT, EventT > callback )
     {
-        auto handler = std::make_unique< detail::Handler< SubscriberT, EventT > >( subscriber, callBack );
+        auto handler = std::make_unique< detail::Handler< SubscriberT, EventT > >( subscriber, callback );
         subscribers[ EventT::staticType ].push_back( std::move( handler ) );
     }
 

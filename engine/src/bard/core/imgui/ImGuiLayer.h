@@ -29,6 +29,9 @@ public:
     void end();
 
 private:
+    void setDarkThemeColors();
+
+private:
     float m_time = 0.0f;
 };
 
