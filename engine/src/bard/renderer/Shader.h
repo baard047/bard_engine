@@ -10,6 +10,8 @@
 
 #include <string>
 #include <memory>
+#include <unordered_map>
+
 #include <bard/auxiliary/FileIO.h>
 #include <glm/glm.hpp>
 
@@ -30,6 +32,8 @@ public:
 
     virtual ~Shader() = default;
 
+    const std::string & name() const noexcept;
+
     virtual void bind() const = 0;
     virtual void unbind() const = 0;
 
@@ -49,6 +53,24 @@ protected:
     explicit Shader( std::string name ) : m_name( std::move( name ) ) {}
 
     std::string m_name;
+};
+
+class ShaderLibrary
+{
+    using Storage = std::unordered_map< std::string, Shader::Ptr >;
+
+public:
+    void add( const std::string & name, Shader::Ptr shader );
+    void add( Shader::Ptr shader );
+    Shader::Ptr load( const Aux::FileIO::FilePath & filepath );
+    Shader::Ptr load( const std::string & name, const Aux::FileIO::FilePath & filepath );
+
+    Shader::Ptr get( const std::string & name );
+
+    bool exists( const std::string & name ) const;
+
+private:
+    Storage m_shaders;
 };
 
 }

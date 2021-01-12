@@ -22,13 +22,14 @@ public:
     void onUpdate( bard::Timestep ts ) override;
 
 private:
+    bard::ShaderLibrary m_shaders;
+
     bard::Shader::Ptr m_triangleShader;
     bard::VertexArray::Ptr m_triangleVA;
 
     bard::Shader::Ptr m_squareShader;
     bard::VertexArray::Ptr m_squareVA;
 
-    bard::Shader::Ptr m_textureShader;
     bard::Texture2D::Ptr m_checkerboardTexture;
     bard::Texture2D::Ptr m_shipTexture;
 

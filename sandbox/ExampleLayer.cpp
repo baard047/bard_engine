@@ -57,9 +57,9 @@ ExampleLayer::ExampleLayer()
     m_checkerboardTexture = bard::Texture2D::create( "assets/textures/Checkerboard.png" );
     m_shipTexture = bard::Texture2D::create( "assets/textures/ship.png");
 
-    m_textureShader = Shader::create( "assets/shaders/Texture.glsl" );
-    m_textureShader->bind();
-    m_textureShader->setInt( "u_Texture", 0 );
+    auto textureShader = m_shaders.load( "assets/shaders/Texture.glsl" );
+    textureShader->bind();
+    textureShader->setInt( "u_Texture", 0 );
 }
 
 void ExampleLayer::onRender()
@@ -85,15 +85,17 @@ void ExampleLayer::onRender()
         }
     }
 
+    auto textureShader = m_shaders.get("Texture");
+
     //Checkerboard
     m_checkerboardTexture->bind();
-    bard::Renderer::submit( m_textureShader, m_squareVA,  glm::scale( glm::mat4(1.0f), glm::vec3(2.f) ) );
+    bard::Renderer::submit( textureShader, m_squareVA,  glm::scale( glm::mat4(1.0f), glm::vec3(2.f) ) );
 
     //Ship
     m_shipTexture->bind();
     glm::mat4 shipTransform{ glm::translate( glm::mat4( 1.f ), m_shipPos )
                              * glm::scale( glm::mat4( 1.0f ), glm::vec3( 0.7f ) ) };
-    bard::Renderer::submit( m_textureShader, m_squareVA, shipTransform );
+    bard::Renderer::submit( textureShader, m_squareVA, shipTransform );
 
     //Triangle
     glm::mat4 transform = glm::translate( glm::mat4(1.f), m_trianglePos );

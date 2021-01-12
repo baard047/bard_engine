@@ -19,7 +19,7 @@ Expected< Bytes, std::error_code > readFile( const FilePath & path ) noexcept
 
     try
     {
-        stream.open( path.c_str() );
+        stream.open( path.c_str(), std::ios::in | std::ios::binary );
         stream.seekg( 0, std::ios::end );
 
         Bytes content;

@@ -35,4 +35,51 @@ Shader::Ptr Shader::createImpl( Args && ... args )
 
     return nullptr;
 }
+
+const std::string & Shader::name() const noexcept
+{
+    return m_name;
+}
+
+/* *********************************** */
+
+void ShaderLibrary::add( const std::string & name, Shader::Ptr shader )
+{
+    BARD_CONDITION_ERROR( exists( name ), "Shader " + name + " already exists!", return );
+    m_shaders.emplace( name, std::move( shader ) );
+}
+
+void ShaderLibrary::add( Shader::Ptr shader )
+{
+    BARD_CONDITION_ERROR( exists( shader->name() ), "Shader " + shader->name() + " already exists!", return );
+    m_shaders.emplace( shader->name(), std::move( shader ) );
+}
+
+Shader::Ptr ShaderLibrary::load( const Aux::FileIO::FilePath & filepath )
+{
+    auto shader = Shader::create( filepath );
+    BARD_CONDITION_ERROR( exists( shader->name() ), "Shader " + shader->name() + " already exists!", return{} );
+    auto it = m_shaders.emplace( shader->name(), std::move( shader ) );
+    return it.first->second;
+}
+
+Shader::Ptr ShaderLibrary::load( const std::string & name, const Aux::FileIO::FilePath & filepath )
+{
+    auto shader = Shader::create( filepath );
+    BARD_CONDITION_ERROR( exists( name ), "Shader " + name + " already exists!", return{} );
+    auto it = m_shaders.emplace( name, std::move( shader ) );
+    return it.first->second;
+}
+
+Shader::Ptr ShaderLibrary::get( const std::string & name )
+{
+    auto it = m_shaders.find( name );
+    return it != m_shaders.end() ? it->second : nullptr;
+}
+
+bool ShaderLibrary::exists( const std::string & name ) const
+{
+    return m_shaders.find( name ) != m_shaders.end();
+}
+
 }
