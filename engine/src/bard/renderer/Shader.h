@@ -10,6 +10,7 @@
 
 #include <string>
 #include <memory>
+#include <bard/auxiliary/FileIO.h>
 #include <glm/glm.hpp>
 
 namespace bard
@@ -25,6 +26,8 @@ public:
                                const std::string & vertexSrc,
                                const std::string & fragmentSrc);
 
+    static Shader::Ptr create( const Aux::FileIO::FilePath & path );
+
     virtual ~Shader() = default;
 
     virtual void bind() const = 0;
@@ -37,7 +40,12 @@ public:
     virtual void setFloat4( const std::string & name, const glm::vec4 & value ) = 0;
     virtual void setMat4( const std::string & name, const glm::mat4 & matrix ) = 0;
 
+private:
+    template< class ... Args >
+    static Shader::Ptr createImpl( Args && ... args );
+
 protected:
+    Shader() = default;
     explicit Shader( std::string name ) : m_name( std::move( name ) ) {}
 
     std::string m_name;

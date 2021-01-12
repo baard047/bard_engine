@@ -51,116 +51,13 @@ ExampleLayer::ExampleLayer()
     m_squareVA->addVertexBuffer( squareVB );
     m_squareVA->setIndexBuffer( IndexBuffer::create( squareIndices, sizeof( squareIndices ) / sizeof( uint32_t ) ) );
 
-    std::string triangleVertexSrc = R"(
-        #version 330 core
+    m_triangleShader = Shader::create( "assets/shaders/Triangle.glsl" );
+    m_squareShader = Shader::create( "assets/shaders/FlatColor.glsl" );
 
-        layout(location = 0) in vec3 a_Position;
-        layout(location = 1) in vec4 a_Color;
-
-        uniform mat4 u_viewProjection;
-        uniform mat4 u_Transform;
-
-        out vec3 v_Position;
-        out vec4 v_Color;
-
-        void main()
-        {
-            v_Position = a_Position;
-            v_Color = a_Color;
-            gl_Position = u_viewProjection * u_Transform * vec4(a_Position, 1.0);
-        }
-    )";
-
-    std::string triangleFragmentSrc = R"(
-        #version 330 core
-
-        layout(location = 0) out vec4 color;
-
-        in vec3 v_Position;
-        in vec4 v_Color;
-
-        void main()
-        {
-            color = v_Color;
-        }
-    )";
-
-    m_triangleShader = Shader::create("Triangle Shader", triangleVertexSrc, triangleFragmentSrc );
-
-    std::string rectangleVertexSrc = R"(
-        #version 330 core
-
-        layout(location = 0) in vec3 a_Position;
-
-        uniform mat4 u_viewProjection;
-        uniform mat4 u_Transform;
-
-        out vec3 v_Position;
-
-        void main()
-        {
-            v_Position = a_Position;
-            gl_Position = u_viewProjection * u_Transform * vec4(a_Position, 1.0);
-        }
-    )";
-
-    std::string rectangleFragmentSrc = R"(
-			#version 330 core
-
-			layout(location = 0) out vec4 color;
-
-			in vec3 v_Position;
-
-			uniform vec3 u_Color;
-
-			void main()
-			{
-				color = vec4(u_Color, 1.0);
-			}
-    )";
-
-    m_squareShader = Shader::create( "Flat color shader", rectangleVertexSrc, rectangleFragmentSrc );
-
-///////////
-
-    std::string textureVertexSrc = R"(
-        #version 330 core
-
-        layout(location = 0) in vec3 a_Position;
-        layout(location = 1) in vec2 a_TexCoord;
-
-        uniform mat4 u_viewProjection;
-        uniform mat4 u_Transform;
-
-        out vec2 v_TexCoord;
-
-        void main()
-        {
-            v_TexCoord = a_TexCoord;
-            gl_Position = u_viewProjection * u_Transform * vec4(a_Position, 1.0);
-        }
-    )";
-
-    std::string textureFragmentSrc = R"(
-        #version 330 core
-
-        layout(location = 0) out vec4 color;
-
-        in vec2 v_TexCoord;
-
-        uniform sampler2D u_Texture;
-
-        void main()
-        {
-        	color = texture(u_Texture, v_TexCoord);
-        }
-    )";
-
-    m_textureShader = Shader::create( "Texture shader", textureVertexSrc, textureFragmentSrc );
-
-    m_checkerboardTexture = bard::Texture2D::create( "assets/textures/Checkerboard.png");
+    m_checkerboardTexture = bard::Texture2D::create( "assets/textures/Checkerboard.png" );
     m_shipTexture = bard::Texture2D::create( "assets/textures/ship.png");
 
+    m_textureShader = Shader::create( "assets/shaders/Texture.glsl" );
     m_textureShader->bind();
     m_textureShader->setInt( "u_Texture", 0 );
 }

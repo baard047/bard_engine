@@ -9,14 +9,20 @@
 #pragma once
 
 #include <bard/renderer/Shader.h>
+#include <bard/auxiliary/FileIO.h>
+
+#include "parsers/ShaderParser.h"
 
 namespace OpenGL {
 
 class Shader : public bard::Shader
 {
+    using Sources = Parsing::ShaderParser::Sources;
+
 public:
-    Shader( std::string name,
-            const std::string &vertexSrc, const std::string & fragmentSrc );
+    explicit Shader( const Aux::FileIO::FilePath & path );
+    Shader( std::string name, const std::string & vertexSrc, const std::string & fragmentSrc );
+
     ~Shader() override;
 
     void bind() const override;
@@ -28,6 +34,9 @@ public:
     void setFloat3( const std::string & name, const glm::vec3 & value ) override;
     void setFloat4( const std::string & name, const glm::vec4 & value ) override;
     void setMat4( const std::string & name, const glm::mat4 & matrix ) override;
+
+private:
+    void compileShaders( Sources && sources ) noexcept;
 
 private:
     uint32_t m_program;

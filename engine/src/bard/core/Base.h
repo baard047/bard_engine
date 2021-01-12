@@ -14,6 +14,7 @@
 #include <functional>
 #include <memory>
 #include <vector>
+#include <cassert>
 ////
 
 #include "logging/Logger.h"
@@ -27,3 +28,11 @@
     #define BARD_ASSERT(...)
     #define BARD_CORE_ASSERT(...)
 #endif
+
+#define BARD_CONDITION_ERROR( condition, msg, breakCondition ) \
+if( condition )                                                \
+{                                                              \
+    CORE_LOG_ERROR( "Critical failure: {0}", msg );            \
+    assert(false);                                             \
+    breakCondition;                                            \
+}

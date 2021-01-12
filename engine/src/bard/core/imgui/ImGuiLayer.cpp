@@ -91,10 +91,10 @@ void ImGuiLayer::onImGuiRender()
 
     ImGui::Checkbox("Demo Window", &showDemoWindow);
     ImGui::Spacing(); ImGui::Spacing();
+
     //TODO proper FPS counter
     ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
-//    float x = Application::instance().window().getWidth() - ImGui::GetWindowContentRegionMax().x - ImGui::GetStyle().WindowPadding.x;
     float x = Application::instance().window().getWidth() - ImGui::GetContentRegionMax().x - ImGui::GetStyle().WindowPadding.x;
     ImGui::SetWindowPos( SETTINGS_WINDOW_NAME, { x , 0 } );
 

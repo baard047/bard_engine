@@ -12,16 +12,27 @@
 
 namespace bard {
 
-Shader::Ptr Shader::create( std::string name,
-                            const std::string & vertexSrc,
-                            const std::string & fragmentSrc )
+Shader::Ptr Shader::create( std::string name, const std::string & vertexSrc, const std::string & fragmentSrc )
+{
+    return createImpl( std::move( name ), vertexSrc, fragmentSrc );
+}
+
+Shader::Ptr Shader::create( const Aux::FileIO::FilePath & path )
+{
+    return createImpl( path );
+}
+
+template< class... Args >
+Shader::Ptr Shader::createImpl( Args && ... args )
 {
     switch ( Renderer::getAPI() )
     {
-        case RendererAPI::API::None: BARD_CORE_ASSERT( false, "RendererAPI::None" ); return nullptr;
+        case RendererAPI::API::None:
+            BARD_CORE_ASSERT( false, "RendererAPI::None" ); return nullptr;
         case RendererAPI::API::OpenGL:
-            return std::make_shared< OpenGL::Shader>( std::move( name ), vertexSrc, fragmentSrc );
+            return std::make_shared< OpenGL::Shader>( std::forward<Args>( args )... );
     }
+
     return nullptr;
 }
 }
