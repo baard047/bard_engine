@@ -21,6 +21,7 @@ Shader::Shader( const Aux::FileIO::FilePath & path )
     {
         auto sources = Parsing::ShaderParser::getSources( std::move( *bytes ) );
         m_name = Parsing::ShaderParser::getShaderName( path.c_str() );
+
         compileShaders( std::move( sources ) );
     }
     else { CORE_LOG_ERROR("Shader reading error! code: {0} path: {1}", bytes.getError(), path ); }
@@ -50,38 +51,32 @@ void Shader::unbind() const
 
 void Shader::setInt( const std::string & name, int value )
 {
-    GLint location = glGetUniformLocation(m_program, name.c_str());
-    glUniform1i(location, value);
+    glUniform1i( getUniformLocation( name ), value );
 }
 
 void Shader::setIntArray( const std::string & name, int * values, uint32_t count )
 {
-    GLint location = glGetUniformLocation(m_program, name.c_str());
-    glUniform1iv(location, count, values);
+    glUniform1iv( getUniformLocation( name ), count, values );
 }
 
 void Shader::setFloat( const std::string & name, float value )
 {
-    GLint location = glGetUniformLocation(m_program, name.c_str());
-    glUniform1f(location, value);
+    glUniform1f( getUniformLocation( name ), value );
 }
 
 void Shader::setFloat3( const std::string & name, const glm::vec3 & value )
 {
-    GLint location = glGetUniformLocation( m_program, name.c_str() );
-    glUniform3f( location, value.x, value.y, value.z );
+    glUniform3f( getUniformLocation( name ), value.x, value.y, value.z );
 }
 
 void Shader::setFloat4( const std::string & name, const glm::vec4 & value )
 {
-    GLint location = glGetUniformLocation(m_program, name.c_str());
-    glUniform4f(location, value.x, value.y, value.z, value.w);
+    glUniform4f( getUniformLocation( name ), value.x, value.y, value.z, value.w );
 }
 
 void Shader::setMat4( const std::string & name, const glm::mat4 & matrix )
 {
-    GLint location = glGetUniformLocation( m_program, name.c_str() );
-    glUniformMatrix4fv( location, 1, GL_FALSE, glm::value_ptr( matrix ) );
+    glUniformMatrix4fv( getUniformLocation( name ), 1, GL_FALSE, glm::value_ptr( matrix ) );
 }
 
 void Shader::compileShaders( Shader::Sources && shaderSources ) noexcept
@@ -146,6 +141,19 @@ void Shader::compileShaders( Shader::Sources && shaderSources ) noexcept
         glDetachShader( program, id );
         glDeleteShader( id );
     }
+}
+
+GLint Shader::getUniformLocation( const std::string & name ) const noexcept
+{
+    auto it = m_uniformLocations.find( name );
+    if( it != m_uniformLocations.end() )
+    {
+        return it->second;
+    }
+
+    GLint location = glGetUniformLocation( m_program, name.c_str() );
+    m_uniformLocations.emplace( name, location );
+    return location;
 }
 
 }

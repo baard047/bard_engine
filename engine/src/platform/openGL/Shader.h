@@ -10,6 +10,7 @@
 
 #include <bard/renderer/Shader.h>
 #include <bard/auxiliary/FileIO.h>
+#include <bard/core/utils/SFINAE.h>
 
 #include "parsers/ShaderParser.h"
 
@@ -18,6 +19,7 @@ namespace OpenGL {
 class Shader : public bard::Shader
 {
     using Sources = Parsing::ShaderParser::Sources;
+    using UniformLocations = std::unordered_map< std::string, GLint >;
 
 public:
     explicit Shader( const Aux::FileIO::FilePath & path );
@@ -37,9 +39,11 @@ public:
 
 private:
     void compileShaders( Sources && sources ) noexcept;
+    GLint getUniformLocation( const std::string & name ) const noexcept;
 
 private:
-    uint32_t m_program;
+    mutable UniformLocations m_uniformLocations;
+    uint32_t m_program = 0;
 };
 
 }
