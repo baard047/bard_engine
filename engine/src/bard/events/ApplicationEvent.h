@@ -22,13 +22,6 @@ struct WindowResize : public Event
 
     const uint32_t width;
     const uint32_t height;
-
-    std::string toString() const override
-    {
-        std::stringstream stream;
-        stream << "WindowResize: " << width << ", " << height;
-        return stream.str();
-    }
 };
 
 struct WindowClose : public Event

@@ -9,7 +9,7 @@
 #pragma once
 
 #include "Base.h"
-#include <bard/core/utils/Timestep.h>
+#include <bard/core/Timestep.h>
 
 namespace bard
 {

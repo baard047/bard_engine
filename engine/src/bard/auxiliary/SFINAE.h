@@ -1,5 +1,5 @@
 /*
- * \file Utils.h
+ * \file SFINAE.h
  * \copyright (C) 2020 Special Technological Center Ltd
  * \author : Bardashevsky A.K.
  * \date : 26.12.2020

@@ -12,7 +12,7 @@
 
 #include <bard/events/ApplicationEvent.h>
 #include <bard/events/MouseEvent.h>
-#include <bard/core/utils/Timestep.h>
+#include <bard/core/Timestep.h>
 
 namespace bard {
 

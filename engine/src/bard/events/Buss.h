@@ -16,8 +16,8 @@
 #include <algorithm>
 
 #include <bard/core/Base.h>
-#include <bard/core/utils/SFINAE.h>
-#include <bard/core/utils/Singleton.h>
+#include <bard/auxiliary/SFINAE.h>
+#include <bard/auxiliary/Singleton.h>
 
 namespace bard::Events {
 

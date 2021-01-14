@@ -14,7 +14,7 @@
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/ostr.h>
 
-#include <bard/core/utils/Singleton.h>
+#include <bard/auxiliary/Singleton.h>
 
 namespace bard::core {
 

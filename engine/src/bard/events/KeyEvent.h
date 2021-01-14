@@ -24,43 +24,22 @@ protected:
 struct KeyPressed : public Key
 {
     EVENT_CLASS_TYPE( Type::KeyPressed )
-    const int repeatCount;
-
     KeyPressed( int keycode, int repeatCount )
             : Key( keycode ), repeatCount( repeatCount ) { }
 
-    std::string toString() const override
-    {
-        std::stringstream stream;
-        stream << "KeyPressed: " << keycode << " (" << repeatCount << " repeats)";
-        return stream.str();
-    }
+    const int repeatCount;
 };
 
 struct KeyReleased : public Key
 {
     EVENT_CLASS_TYPE( Type::KeyReleased )
     explicit KeyReleased( int keycode ) : Key( keycode ) { }
-
-    std::string toString() const override
-    {
-        std::stringstream ss;
-        ss << "KeyReleased: " << keycode;
-        return ss.str();
-    }
 };
 
 struct KeyTyped : public Key
 {
     EVENT_CLASS_TYPE( Type::KeyTyped )
     explicit KeyTyped( int keycode) : Key( keycode ) {}
-
-    std::string toString() const override
-    {
-        std::stringstream ss;
-        ss << "KeyTyped: " << keycode;
-        return ss.str();
-    }
 };
 
 }

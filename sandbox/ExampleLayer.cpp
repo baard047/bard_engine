@@ -13,7 +13,7 @@
 
 ExampleLayer::ExampleLayer()
         : bard::Layer( "Example Layer" ),
-          m_cameraController( 1280.f / 720.f, true )
+          m_cameraController( 1280.f / 720.f )
 {
     using namespace bard;
 

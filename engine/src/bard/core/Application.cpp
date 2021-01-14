@@ -10,7 +10,7 @@
 
 #include <platform/linux/Window.h>
 #include <bard/renderer/Renderer.h>
-#include <bard/core/utils/Timestep.h>
+#include <bard/core/Timestep.h>
 #include <bard/events/Buss.h>
 
 namespace bard {

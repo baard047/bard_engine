@@ -10,7 +10,7 @@
 
 #include <bard/renderer/Shader.h>
 #include <bard/auxiliary/FileIO.h>
-#include <bard/core/utils/SFINAE.h>
+#include <bard/auxiliary/SFINAE.h>
 
 #include "parsers/ShaderParser.h"
 

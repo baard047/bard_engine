@@ -21,13 +21,6 @@ struct MouseMoved : public Event
 
     const float x;
     const float y;
-
-    std::string toString() const override
-    {
-        std::stringstream stream;
-        stream << "MouseMoved: " << x << ", " << y;
-        return stream.str();
-    }
 };
 
 struct MouseScrolled : public Event
@@ -42,18 +35,12 @@ struct MouseScrolled : public Event
 
     const float xOffset;
     const float yOffset;
-
-    std::string toString() const override
-    {
-        std::stringstream ss;
-        ss << "MouseScrolled: " << xOffset << ", " << yOffset;
-        return ss.str();
-    }
 };
 
 struct MouseButton : public Event
 {
     EVENT_CLASS_CATEGORY( Category::Mouse | Category::Input )
+
     const int button;
 
 protected:
@@ -64,26 +51,12 @@ struct MouseButtonPressed : public MouseButton
 {
     EVENT_CLASS_TYPE( Type::MouseButtonPressed )
     explicit MouseButtonPressed( int button ) : MouseButton( button ) { }
-
-    std::string toString() const override
-    {
-        std::stringstream ss;
-        ss << "MouseButtonPressed: " << button;
-        return ss.str();
-    }
 };
 
 struct MouseButtonReleased : public MouseButton
 {
     EVENT_CLASS_TYPE( Type::MouseButtonReleased )
     explicit MouseButtonReleased( int button) : MouseButton(button) {}
-
-    std::string toString() const override
-    {
-        std::stringstream ss;
-        ss << "MouseButtonReleased: " << button;
-        return ss.str();
-    }
 };
 
 }
