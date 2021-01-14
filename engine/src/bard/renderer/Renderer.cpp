@@ -37,6 +37,12 @@ void Renderer::submit( const Shader::Ptr & shader, const VertexArray::Ptr & vert
     RenderCommand::drawIndexed( vertexArray );
 }
 
+void Renderer::onWindowResize( uint32_t width, uint32_t height )
+{
+    //TODO rework after adding multiple viewports
+    RenderCommand::setViewPort( 0, 0, width, height );
+}
+
 Renderer::SceneData::Ptr Renderer::m_sceneData = std::make_unique< Renderer::SceneData >();
 
 }

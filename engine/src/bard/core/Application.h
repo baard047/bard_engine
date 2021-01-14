@@ -33,15 +33,17 @@ protected:
     Application();
 
 private:
-    bool onWindowCloseEvent( Events::WindowClose & event );
+    bool onWindowClose( Events::WindowClose & event );
+    bool onWindowResize( Events::WindowResize & event );
 
 private:
     LayerStack m_layerStack;
     WindowInterface::Ptr m_window;
     ImGuiLayer * m_ImGuiLayer;
 
-    float m_lastFrameTime;
-    bool m_running;
+    float m_lastFrameTime = 0;
+    bool m_running = true;
+    bool m_minimized = false;
 
 private:
     static Application * m_instance;

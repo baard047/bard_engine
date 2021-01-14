@@ -28,6 +28,8 @@ public:
     static void submit( const Shader::Ptr & shader, const VertexArray::Ptr & vertexArray,
                         const glm::mat4 & transform = glm::mat4(1.0f) );
 
+    static void onWindowResize( uint32_t width, uint32_t height );
+
     inline static RendererAPI::API getAPI() noexcept { return RendererAPI::getAPI();  }
 
 private:

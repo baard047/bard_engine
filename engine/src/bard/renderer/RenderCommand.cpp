@@ -12,6 +12,8 @@
 namespace bard
 {
 
+//TODO create
+
 std::unique_ptr< RendererAPI > RenderCommand::s_rendererAPI = std::make_unique< OpenGL::RendererAPI >();
 
 }

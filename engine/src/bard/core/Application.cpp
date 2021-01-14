@@ -17,8 +17,7 @@ namespace bard {
 
 Application::Application()
         : m_window( Linux::Window::create( { "Bard Engine", 1280, 720 } ) ),
-          m_ImGuiLayer( new ImGuiLayer{} ),
-          m_running( true )
+          m_ImGuiLayer( new ImGuiLayer{} )
 {
     BARD_CORE_ASSERT( !m_instance, "Application already exist" );
     m_instance = this;
@@ -26,7 +25,8 @@ Application::Application()
 
     pushOverlay( m_ImGuiLayer );
 
-    Events::Buss::get().subscribe( this, &Application::onWindowCloseEvent );
+    Events::Buss::get().subscribe( this, &Application::onWindowClose );
+    Events::Buss::get().subscribe( this, &Application::onWindowResize );
 }
 
 void Application::run()
@@ -37,19 +37,23 @@ void Application::run()
         Timestep timestep { time - m_lastFrameTime };
         m_lastFrameTime = time;
 
-        for( auto layer : m_layerStack )
+        if( !m_minimized )
         {
-            layer->onUpdate( timestep );
-        }
+            for( auto layer : m_layerStack )
+            {
+                layer->onUpdate( timestep );
+            }
 
-        for( auto layer : m_layerStack )
-        {
-            layer->onRender();
-        }
+            for( auto layer : m_layerStack )
+            {
+                layer->onRender();
+            }
 
-        m_ImGuiLayer->begin();
-        for( auto layer : m_layerStack ) { layer->onImGuiRender(); }
-        m_ImGuiLayer->end();
+            //NOTE: move outside if statement with multipleViewports enabled
+            m_ImGuiLayer->begin();
+            for( auto layer : m_layerStack ) { layer->onImGuiRender(); }
+            m_ImGuiLayer->end();
+        }
 
         m_window->update();
     }
@@ -67,10 +71,23 @@ void Application::pushOverlay( Layer * overlay )
     overlay->onAttach();
 }
 
-bool Application::onWindowCloseEvent( Events::WindowClose & )
+bool Application::onWindowClose( Events::WindowClose & )
 {
     m_running = false;
     return true;
+}
+
+bool Application::onWindowResize( Events::WindowResize & event )
+{
+    if( event.width == 0 || event.height == 0 )
+    {
+        m_minimized = true;
+        return true;
+    }
+
+    Renderer::onWindowResize( event.width, event.height );
+    m_minimized = false;
+    return false;
 }
 
 Application * Application::m_instance = nullptr;
