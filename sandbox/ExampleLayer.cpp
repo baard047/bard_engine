@@ -10,6 +10,7 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <imgui.h>
 
 ExampleLayer::ExampleLayer()
         : bard::Layer( "Example Layer" ),
@@ -67,7 +68,7 @@ void ExampleLayer::onRender()
     bard::RenderCommand::setClearColor( { 0.1f, 0.1f, 0.1f, 1 } );
     bard::RenderCommand::clear();
 
-    bard::Renderer::beginScene( m_cameraController.getCamera() );
+    bard::Renderer::BeginScene( m_cameraController.getCamera() );
 
     //Squares
     m_squareShader->bind();
@@ -81,7 +82,7 @@ void ExampleLayer::onRender()
         {
             glm::vec3 pos( (float)x * padding, (float)y * padding, 0.0f );
             glm::mat4 transform = glm::translate( glm::mat4(1.f), pos ) * scale;
-            bard::Renderer::submit( m_squareShader, m_squareVA, transform );
+            bard::Renderer::Submit( m_squareShader, m_squareVA, transform );
         }
     }
 
@@ -89,19 +90,19 @@ void ExampleLayer::onRender()
 
     //Checkerboard
     m_checkerboardTexture->bind();
-    bard::Renderer::submit( textureShader, m_squareVA,  glm::scale( glm::mat4(1.0f), glm::vec3(2.f) ) );
+    bard::Renderer::Submit( textureShader, m_squareVA, glm::scale( glm::mat4( 1.0f ), glm::vec3( 2.f ) ) );
 
     //Ship
     m_shipTexture->bind();
     glm::mat4 shipTransform{ glm::translate( glm::mat4( 1.f ), m_shipPos )
                              * glm::scale( glm::mat4( 1.0f ), glm::vec3( 0.7f ) ) };
-    bard::Renderer::submit( textureShader, m_squareVA, shipTransform );
+    bard::Renderer::Submit( textureShader, m_squareVA, shipTransform );
 
     //Triangle
     glm::mat4 transform = glm::translate( glm::mat4(1.f), m_trianglePos );
-    bard::Renderer::submit( m_triangleShader, m_triangleVA, transform );
+    bard::Renderer::Submit( m_triangleShader, m_triangleVA, transform );
 
-    bard::Renderer::endScene();
+    bard::Renderer::EndScene();
 }
 
 void ExampleLayer::onImGuiRender()

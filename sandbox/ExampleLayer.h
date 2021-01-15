@@ -9,17 +9,16 @@
 #pragma once
 
 #include <Engine.h>
-#include <imgui.h>
-#include <bard/renderer/Texture.h>
 
 class ExampleLayer : public bard::Layer
 {
 public:
     ExampleLayer();
 
-    void onImGuiRender() override;
-    void onRender() override;
     void onUpdate( bard::Timestep ts ) override;
+    void onRender() override;
+
+    void onImGuiRender() override;
 
 private:
     bard::ShaderLibrary m_shaders;

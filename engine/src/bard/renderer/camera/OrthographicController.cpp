@@ -6,7 +6,7 @@
  * \time : 18:17
  */
 
-#include "Controller.h"
+#include "OrthographicController.h"
 
 #include <bard/events/Buss.h>
 #include <bard/core/Input.h>
@@ -21,6 +21,7 @@ CameraController::CameraController( float aspectRatio, bool rotation )
                     -m_zoomLevel, m_zoomLevel ),
           m_rotation( rotation )
 {
+    //TODO maybe forbid this and let only "camera holders" to subscribe
     Events::Buss::get().subscribe( this, &CameraController::onMouseScrolled );
     Events::Buss::get().subscribe( this, &CameraController::onWindowResized );
 }

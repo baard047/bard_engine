@@ -8,10 +8,12 @@
 
 #pragma once
 
-#include <bard/core/EntryPoint.h>
 #include "bard/core/Application.h"
 #include <bard/core/Timestep.h>
 #include <bard/core/imgui/ImGuiLayer.h>
+
 #include <bard/renderer/Renderer.h>
+#include <bard/renderer/2D/Renderer.h>
 #include <bard/renderer/camera/OrthographicCamera.h>
-#include <bard/renderer/camera/Controller.h>
+#include <bard/renderer/camera/OrthographicController.h>
+#include <bard/renderer/Texture.h>

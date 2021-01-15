@@ -22,11 +22,11 @@ class Renderer
 public:
     static void init();
 
-    static void beginScene( OrthographicCamera & camera );
-    static void endScene();
+    static void BeginScene( OrthographicCamera & camera );
+    static void EndScene();
 
-    static void submit( const Shader::Ptr & shader, const VertexArray::Ptr & vertexArray,
-                        const glm::mat4 & transform = glm::mat4(1.0f) );
+    static void Submit( const Shader::Ptr & shader, const VertexArray::Ptr & vertexArray,
+                        const glm::mat4 & transform = glm::mat4( 1.0f ) );
 
     static void onWindowResize( uint32_t width, uint32_t height );
 

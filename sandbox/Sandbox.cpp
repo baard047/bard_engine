@@ -7,16 +7,18 @@
  */
 
 #include <Engine.h>
+#include <bard/core/EntryPoint.h>
 
 #include "ExampleLayer.h"
+#include "Sandbox2D.h"
 
 class Sandbox final : public bard::Application
 {
 public:
     Sandbox()
     {
-        pushLayer( new ExampleLayer{} );
-//        pushOverlay( new bard::ImGuiLayer{} );
+//        pushLayer( new ExampleLayer{} );
+        pushLayer( new Sandbox2D{} );
         LOG_INFO("Sandbox has been created!");
     }
 };

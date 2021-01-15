@@ -22,9 +22,6 @@ public:
 
     virtual ~Layer() = default;
 
-    //function to implement on client side.
-    virtual void setupConnections() {}
-
     virtual void onAttach() {}
     virtual void onDetach() {}
 

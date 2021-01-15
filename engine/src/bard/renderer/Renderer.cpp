@@ -7,6 +7,7 @@
  */
 
 #include "Renderer.h"
+#include <bard/renderer/2D/Renderer.h>
 
 namespace bard
 {
@@ -14,19 +15,20 @@ namespace bard
 void Renderer::init()
 {
     RenderCommand::init();
+    bard::Renderer2D::init();
 }
 
-void Renderer::beginScene( OrthographicCamera & camera )
+void Renderer::BeginScene( OrthographicCamera & camera )
 {
     m_sceneData->viewProjectionMatrix = camera.viewProjectionMatrix();
 }
 
-void Renderer::endScene()
+void Renderer::EndScene()
 {
 
 }
 
-void Renderer::submit( const Shader::Ptr & shader, const VertexArray::Ptr & vertexArray,
+void Renderer::Submit( const Shader::Ptr & shader, const VertexArray::Ptr & vertexArray,
                        const glm::mat4 & transform )
 {
     shader->bind();
