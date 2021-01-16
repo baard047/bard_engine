@@ -26,14 +26,20 @@ void OrthographicCamera::setProjection( float left, float right, float bottom, f
 
 void OrthographicCamera::setPosition( const glm::vec3 & position ) noexcept
 {
-    m_position = position;
-    recalculateViewMatrix();
+    if( m_position != position )
+    {
+        m_position = position;
+        recalculateViewMatrix();
+    }
 }
 
 void OrthographicCamera::setRotation( float rotation ) noexcept
 {
-    m_rotation = rotation;
-    recalculateViewMatrix();
+    if( m_rotation != rotation )
+    {
+        m_rotation = rotation;
+        recalculateViewMatrix();
+    }
 }
 
 const glm::vec3 & OrthographicCamera::position() const noexcept

@@ -38,6 +38,7 @@ void RendererAPI::clear()
 void RendererAPI::drawIndexed( const bard::VertexArray::Ptr & vertexArray )
 {
     glDrawElements( GL_TRIANGLES, vertexArray->getIndexBuffer()->getCount(), GL_UNSIGNED_INT, nullptr );
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 }

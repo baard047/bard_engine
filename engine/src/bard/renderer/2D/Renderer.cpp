@@ -24,8 +24,8 @@ struct Renderer2DData
 {
     //TODO make unique pointers
     VertexArray::Ptr quadVA;
-    Shader::Ptr flatColorShader;
     Shader::Ptr textureShader;
+    Texture2D::Ptr whiteTexture;
 };
 
 Renderer2DData * s_Data = nullptr;
@@ -53,9 +53,11 @@ void Renderer2D::init()
     s_Data->quadVA->addVertexBuffer( squareVB );
     s_Data->quadVA->setIndexBuffer( IndexBuffer::create( squareIndices, sizeof( squareIndices ) / sizeof( uint32_t ) ) );
 
-    s_Data->flatColorShader = Shader::create( "assets/shaders/FlatColor2.glsl" );
-    s_Data->textureShader = Shader::create( "assets/shaders/Texture.glsl" );
+    s_Data->whiteTexture = Texture2D::create(1, 1);
+    uint32_t white = 0xffffffff;
+    s_Data->whiteTexture->setData( &white, sizeof( white ) );
 
+    s_Data->textureShader = Shader::create( "assets/shaders/Texture.glsl" );
     s_Data->textureShader->bind();
     s_Data->textureShader->setInt("u_Texture", 0);
 }
@@ -67,9 +69,6 @@ void Renderer2D::shutdown()
 
 void Renderer2D::BeginScene( const OrthographicCamera & camera )
 {
-    s_Data->flatColorShader->bind();
-    s_Data->flatColorShader->setMat4( "u_viewProjection", camera.viewProjectionMatrix() );
-
     s_Data->textureShader->bind();
     s_Data->textureShader->setMat4( "u_viewProjection", camera.viewProjectionMatrix() );
 }
@@ -86,14 +85,12 @@ void Renderer2D::DrawQuad( const glm::vec2 & pos, const glm::vec2 & size, const 
 
 void Renderer2D::DrawQuad( const glm::vec3 & pos, const glm::vec2 & size, const glm::vec4 & color )
 {
-    s_Data->flatColorShader->bind();
-    s_Data->flatColorShader->setFloat4( "u_Color", color );
+    s_Data->textureShader->setFloat4( "u_Color", color );
+    s_Data->whiteTexture->bind();
 
     auto transform = glm::translate( glm::mat4{ 1.f }, pos ) /* TODO * rotation */
                      * glm::scale( glm::mat4{ 1.f }, { size.x, size.y, 1.f } );
-    s_Data->flatColorShader->setMat4( "u_Transform", transform );
-
-
+    s_Data->textureShader->setMat4( "u_Transform", transform );
     s_Data->quadVA->bind();
     RenderCommand::drawIndexed( s_Data->quadVA );
 }
@@ -105,14 +102,13 @@ void Renderer2D::DrawQuad( const glm::vec2 & pos, const glm::vec2 & size, const 
 
 void Renderer2D::DrawQuad( const glm::vec3 & pos, const glm::vec2 & size, const Texture2D::Ptr & texture )
 {
-    s_Data->textureShader->bind();
+    s_Data->textureShader->setFloat4( "u_Color", glm::vec4( 1.f ) ); //TODO setColor
+    texture->bind();
 
     auto transform = glm::translate( glm::mat4{ 1.f }, pos ) /* TODO * rotation */
                      * glm::scale( glm::mat4{ 1.f }, { size.x, size.y, 1.f } );
     s_Data->textureShader->setMat4( "u_Transform", transform );
     //TODO apply color later
-
-    texture->bind();
 
     s_Data->quadVA->bind();
     RenderCommand::drawIndexed( s_Data->quadVA );

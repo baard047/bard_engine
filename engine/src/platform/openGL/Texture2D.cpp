@@ -81,10 +81,16 @@ Texture2D::Texture2D( std::string path )
     stbi_image_free( data );
 }
 
+void Texture2D::setData( void * data, uint32_t size )
+{
+    uint32_t bpp = m_DataFormat == GL_RGBA ? 4 : 3;
+    BARD_CORE_ASSERT( ( size == m_width * m_height * bpp ), "Data must be entire texture!");
+    glTextureSubImage2D(m_rendererID, 0, 0, 0, m_width, m_height, m_DataFormat, GL_UNSIGNED_BYTE, data);
+}
+
 Texture2D::~Texture2D()
 {
     glDeleteTextures( 1, &m_rendererID );
-
 }
 
 void Texture2D::bind( uint32_t slot ) const

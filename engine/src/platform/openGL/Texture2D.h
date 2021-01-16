@@ -23,6 +23,8 @@ public:
 
     ~Texture2D() override;
 
+    void setData( void * data, uint32_t size ) override;
+
     void bind( uint32_t slot ) const override;
 
 private:
