@@ -24,6 +24,7 @@ struct EntryPoint
 
     inline void run( Application * application )
     {
+//        BARD_PROFILE_BEGIN_SESSION( "Runtime", "profile-runtime.json" );
         if( m_application )
         {
             BARD_CORE_ASSERT(false, "Application already running!");
@@ -32,6 +33,7 @@ struct EntryPoint
 
         m_application = application;
         m_application->run();
+//        BARD_PROFILE_END_SESSION();
     }
 
     ~EntryPoint()

@@ -18,6 +18,7 @@
 ////
 
 #include "logging/Logger.h"
+#include <bard/auxiliary/Profiler.h>
 
 #ifdef BARD_ENABLE_ASSERTS
 #include <csignal>

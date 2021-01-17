@@ -17,3 +17,6 @@
 #include <bard/renderer/camera/OrthographicCamera.h>
 #include <bard/renderer/camera/OrthographicController.h>
 #include <bard/renderer/Texture.h>
+
+///
+#include <bard/auxiliary/Profiler.h>

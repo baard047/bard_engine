@@ -11,7 +11,7 @@
 #include <memory>
 #include <mutex>
 
-namespace bard {
+namespace Aux {
 
 template< typename HeirT >
 class Singleton

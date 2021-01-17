@@ -18,7 +18,7 @@
 
 namespace bard::core {
 
-class Logger : public Singleton< Logger >
+class Logger : public Aux::Singleton< Logger >
 {
     using Ptr = std::shared_ptr< spdlog::logger >;
 

@@ -64,7 +64,7 @@ private:
 
 }
 
-class Buss : public Singleton< Buss >
+class Buss : public Aux::Singleton< Buss >
 {
     using Handlers = std::vector< detail::FunctionWrapper::Ptr >;
 
