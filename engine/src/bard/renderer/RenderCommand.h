@@ -21,9 +21,9 @@ public:
         s_rendererAPI->init();
     }
 
-    inline static void drawIndexed( const VertexArray::Ptr & vertexArray )
+    inline static void drawIndexed( const VertexArray::Ptr & vertexArray, uint32_t count = 0 )
     {
-        s_rendererAPI->drawIndexed( vertexArray );
+        s_rendererAPI->drawIndexed( vertexArray, count );
     }
 
     inline static void setClearColor(const glm::vec4& color)

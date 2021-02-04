@@ -18,11 +18,14 @@ using VertexBufferObject = uint32_t;
 class VertexBuffer : public bard::VertexBuffer
 {
 public:
+    explicit VertexBuffer( uint32_t size );
     VertexBuffer( float * vertices, uint32_t size );
     ~VertexBuffer() override;
 
     void bind() const override;
     void unbind() const override;
+
+    void setData( const void * data, uint32_t size ) override;
 
 private:
     VertexBufferObject m_buffer = 0;

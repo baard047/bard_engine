@@ -38,7 +38,7 @@ void Sandbox2D::onRender()
 
     bard::Renderer2D::BeginScene( m_cameraController.getCamera() );
 
-    bard::Renderer2D::DrawQuad( { 0.1f, 0.f, -0.1f }, { 10.f, 10.f }, m_checkerboardTexture );
+//    bard::Renderer2D::DrawQuad( { 0.1f, 0.f, -0.1f }, { 10.f, 10.f }, m_checkerboardTexture );
     bard::Renderer2D::DrawQuad( { -1.f, 0.f }, { 0.8f, 0.8f }, { 0.7f, 0.2f, 0.3f, 1.f } );
     bard::Renderer2D::DrawQuad( { 0.5f, -0.5f }, { 0.5f, 0.75f }, m_squaresColor );
 

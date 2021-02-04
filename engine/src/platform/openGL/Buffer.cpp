@@ -15,6 +15,13 @@ namespace OpenGL
 
 ////////////////////////////// VertexBuffer //////////////////////////////
 
+VertexBuffer::VertexBuffer( uint32_t size )
+{
+    glCreateBuffers( 1, &m_buffer );
+    glBindBuffer( GL_ARRAY_BUFFER, m_buffer );
+    glBufferData( GL_ARRAY_BUFFER, size, nullptr, GL_STATIC_DRAW );
+}
+
 VertexBuffer::VertexBuffer( float * vertices, uint32_t size )
 {
     glCreateBuffers( 1, &m_buffer );
@@ -35,6 +42,12 @@ void VertexBuffer::bind() const
 void VertexBuffer::unbind() const
 {
     glBindBuffer( GL_ARRAY_BUFFER, 0 );
+}
+
+void VertexBuffer::setData( const void * data, uint32_t size )
+{
+    glBindBuffer( GL_ARRAY_BUFFER, m_buffer );
+    glBufferSubData( GL_ARRAY_BUFFER, 0, size, data );
 }
 
 

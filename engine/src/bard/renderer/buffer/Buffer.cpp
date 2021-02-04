@@ -15,17 +15,14 @@
 
 namespace bard {
 
+VertexBuffer::Ptr VertexBuffer::create( uint32_t size )
+{
+    return createImpl( size );
+}
+
 VertexBuffer::Ptr VertexBuffer::create( float * vertices, uint32_t size )
 {
-    switch ( Renderer::getAPI() )
-    {
-        case RendererAPI::API::None:
-        BARD_CORE_ASSERT( false, "RendererAPI::None" );
-            return nullptr;
-        case RendererAPI::API::OpenGL:
-            return std::make_shared< OpenGL::VertexBuffer >( vertices, size );
-    }
-    return nullptr;
+    return createImpl( vertices, size );
 }
 
 VertexBuffer::Ptr VertexBuffer::create( float * vertices, uint32_t size, BufferLayout && layout )
@@ -35,13 +32,23 @@ VertexBuffer::Ptr VertexBuffer::create( float * vertices, uint32_t size, BufferL
     return buffer;
 }
 
+template< class... Args >
+VertexBuffer::Ptr VertexBuffer::createImpl( Args && ... args )
+{
+    switch ( Renderer::getAPI() )
+    {
+        case RendererAPI::API::None: BARD_CORE_ASSERT( false, "RendererAPI::None" ); return nullptr;
+        case RendererAPI::API::OpenGL:
+            return std::make_shared< OpenGL::VertexBuffer >(  std::forward<Args>( args )... );
+    }
+    return nullptr;
+}
+
 IndexBuffer::Ptr IndexBuffer::create( uint32_t * indices, uint32_t count )
 {
     switch ( Renderer::getAPI() )
     {
-        case RendererAPI::API::None:
-        BARD_CORE_ASSERT( false, "RendererAPI::None" );
-            return nullptr;
+        case RendererAPI::API::None: BARD_CORE_ASSERT( false, "RendererAPI::None" ); return nullptr;
         case RendererAPI::API::OpenGL:
             return std::make_shared< OpenGL::IndexBuffer >( indices, count );
     }

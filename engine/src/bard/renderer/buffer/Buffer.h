@@ -19,6 +19,7 @@ public:
     using Ptr = std::shared_ptr< VertexBuffer >;
 
 public:
+    static VertexBuffer::Ptr create( uint32_t size );
     static VertexBuffer::Ptr create( float * vertices, uint32_t size );
     static VertexBuffer::Ptr create( float * vertices, uint32_t size, BufferLayout && layout );
 
@@ -26,6 +27,8 @@ public:
 
     virtual void bind() const = 0;
     virtual void unbind() const = 0;
+
+    virtual void setData( const void * data, uint32_t size ) = 0;
 
     inline const BufferLayout & layout() const noexcept
     {
@@ -36,6 +39,10 @@ public:
     {
         m_layout = std::move( layout );
     }
+
+private:
+    template< class ... Args >
+    static VertexBuffer::Ptr createImpl( Args && ... args );
 
 protected:
     BufferLayout m_layout;

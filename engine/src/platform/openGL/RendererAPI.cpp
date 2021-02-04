@@ -35,10 +35,11 @@ void RendererAPI::clear()
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 }
 
-void RendererAPI::drawIndexed( const bard::VertexArray::Ptr & vertexArray )
+void RendererAPI::drawIndexed( const bard::VertexArray::Ptr & vertexArray, uint32_t indexCount )
 {
-    glDrawElements( GL_TRIANGLES, vertexArray->getIndexBuffer()->getCount(), GL_UNSIGNED_INT, nullptr );
-    glBindTexture(GL_TEXTURE_2D, 0);
+    uint32_t count = indexCount != 0 ? indexCount : vertexArray->getIndexBuffer()->getCount();
+    glDrawElements( GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr );
+    glBindTexture( GL_TEXTURE_2D, 0 );
 }
 
 }
