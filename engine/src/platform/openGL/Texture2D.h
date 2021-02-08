@@ -27,6 +27,8 @@ public:
 
     void bind( uint32_t slot ) const override;
 
+    bool operator ==( const Texture & other ) const override;
+
 private:
     std::string m_path;
     GLenum m_InternalFormat, m_DataFormat;

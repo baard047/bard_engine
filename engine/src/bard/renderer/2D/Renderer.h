@@ -29,8 +29,8 @@ public:
     static void DrawQuad( const glm::vec2 & pos, const glm::vec2 & size, const glm::vec4 & color );
     static void DrawQuad( const glm::vec3 & pos, const glm::vec2 & size, const glm::vec4 & color );
 
-    static void DrawQuad( const glm::vec2 & pos, const glm::vec2 & size, const Texture2D::Ptr & texture );
-    static void DrawQuad( const glm::vec3 & pos, const glm::vec2 & size, const Texture2D::Ptr & texture );
+    static void DrawQuad( const glm::vec2 & pos, const glm::vec2 & size, const Texture2D::Ptr & texture, float tilingFactor = 1.0 );
+    static void DrawQuad( const glm::vec3 & pos, const glm::vec2 & size, const Texture2D::Ptr & texture, float tilingFactor = 1.0 );
 
 public:
     Renderer2D() = delete;

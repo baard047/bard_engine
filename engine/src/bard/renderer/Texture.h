@@ -25,6 +25,8 @@ public:
     virtual void setData(void * data, uint32_t size) = 0;
     virtual void bind( uint32_t slot = 0 ) const = 0;
 
+    virtual bool operator ==( const Texture & other ) const = 0;
+
 public:
     uint32_t width() const noexcept;
     uint32_t height() const noexcept;

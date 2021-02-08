@@ -98,4 +98,9 @@ void Texture2D::bind( uint32_t slot ) const
     glBindTextureUnit( slot, m_rendererID );
 }
 
+bool Texture2D::operator ==( const Texture & other ) const
+{
+    return m_rendererID == other.rendererID();
+}
+
 }
