@@ -18,19 +18,36 @@ namespace bard
 class Renderer2D
 {
 public:
-    static void init();
-    static void shutdown();
+    static void init() noexcept;
+    static void shutdown() noexcept;
 
-    static void BeginScene( const OrthographicCamera & camera );
-    static void EndScene();
+    static void BeginScene( const OrthographicCamera & camera ) noexcept;
+    static void EndScene() noexcept;
 
-    static void Flush();
+    static void DrawQuad( const glm::vec2 & pos, const glm::vec2 & size, const glm::vec4 & color ) noexcept;
+    static void DrawQuad( const glm::vec3 & pos, const glm::vec2 & size, const glm::vec4 & color ) noexcept;
+    static void DrawQuad( const glm::mat4 & transform, const glm::vec4& color ) noexcept;
 
-    static void DrawQuad( const glm::vec2 & pos, const glm::vec2 & size, const glm::vec4 & color );
-    static void DrawQuad( const glm::vec3 & pos, const glm::vec2 & size, const glm::vec4 & color );
+    static void DrawQuad( const glm::vec2 & pos, const glm::vec2 & size, const Texture2D::Ptr & texture, float tilingFactor = 1.0 ) noexcept;
+    static void DrawQuad( const glm::vec3 & pos, const glm::vec2 & size, const Texture2D::Ptr & texture, float tilingFactor = 1.0 ) noexcept;
+    static void DrawQuad( const glm::mat4 & transform, const Texture2D::Ptr & texture, float tilingFactor = 1.0 ) noexcept;
 
-    static void DrawQuad( const glm::vec2 & pos, const glm::vec2 & size, const Texture2D::Ptr & texture, float tilingFactor = 1.0 );
-    static void DrawQuad( const glm::vec3 & pos, const glm::vec2 & size, const Texture2D::Ptr & texture, float tilingFactor = 1.0 );
+    struct Statistics
+    {
+        uint32_t drawCalls = 0;
+        uint32_t quadCount = 0;
+
+        uint32_t getTotalVertexCount() const { return quadCount * 4; }
+        uint32_t getTotalIndexCount() const { return quadCount * 6; }
+    };
+
+    static void resetStats();
+    static Statistics getStats();
+
+private:
+    static void StartBatch() noexcept;
+    static void NextBatch() noexcept;
+    static void Flush() noexcept;
 
 public:
     Renderer2D() = delete;
